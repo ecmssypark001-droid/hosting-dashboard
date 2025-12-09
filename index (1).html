@@ -1,0 +1,2229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<title>SIIC 부천센터 업무 시스템 · 호스팅 CS 현황</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<style>
+* { 
+  box-sizing: border-box; 
+  margin: 0;
+  padding: 0;
+}
+
+html, body { 
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #111827;
+  background: #ffffff;
+}
+
+.slide-root {
+  width: 100%;
+  min-width: 1280px;
+  min-height: 100vh;
+  background: #f3f4f6;
+}
+
+.layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 16px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-top {
+  background: #0f6fff;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+
+.sidebar-top p { 
+  margin: 0; 
+  font-weight: 700; 
+  font-size: 14px; 
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 4px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 12px;
+}
+
+.avatar { 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 999px; 
+  background: #e0f2fe; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.avatar p { 
+  margin: 0; 
+  font-weight: 700; 
+  font-size: 14px; 
+  color: #0369a1; 
+}
+
+.sidebar-user-text p { 
+  margin: 0; 
+  line-height: 1.1; 
+}
+
+.sidebar-user-text .user-name { 
+  font-size: 13px; 
+  font-weight: 600; 
+}
+
+.sidebar-user-text .user-role { 
+  font-size: 11px; 
+  color: #9ca3af; 
+}
+
+.sidebar-toggle {
+  margin-left: auto;
+  min-width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-toggle p { 
+  margin: 0; 
+  font-size: 11px; 
+  color: #6b7280; 
+}
+
+.nav { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 2px; 
+}
+
+.nav-item { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  padding: 6px 8px; 
+  border-radius: 8px; 
+  color: #374151; 
+  cursor: default; 
+}
+
+.nav-item p.nav-label { 
+  margin: 0; 
+  font-size: 13px; 
+}
+
+.nav-item.indent-1 { padding-left: 16px; }
+.nav-item.indent-2 { padding-left: 32px; }
+
+.nav-bullet { 
+  width: 5px; 
+  height: 5px; 
+  border-radius: 999px; 
+  background: #9ca3af; 
+  display: inline-block; 
+  flex-shrink: 0; 
+}
+
+.nav-item--active { 
+  background: #eff6ff; 
+  color: #1d4ed8; 
+  font-weight: 600; 
+}
+
+.nav-item--active p.nav-label { 
+  color: #1d4ed8; 
+}
+
+.nav-bullet.active { 
+  background: #1d4ed8; 
+}
+
+.main {
+  flex: 1;
+  background: #f9fafb;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+.global-header {
+  background: #0f6fff;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(15, 111, 255, 0.1);
+}
+
+.gh-left, .gh-right { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+}
+
+.gh-left p, .gh-right p { 
+  margin: 0; 
+  font-size: 14px; 
+  font-weight: 600; 
+}
+
+.gh-left p.meta { 
+  opacity: 0.85; 
+  font-size: 11px; 
+  font-weight: 400; 
+  margin-left: 8px; 
+}
+
+.gh-left p.sep { 
+  opacity: 0.6; 
+  font-weight: 400; 
+  margin: 0 4px; 
+}
+
+.btn { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  border: 1px solid #ffffff; 
+  background: #ffffff; 
+  color: #0f6fff; 
+  border-radius: 6px; 
+  padding: 4px 12px; 
+  cursor: default; 
+}
+
+.btn p { 
+  margin: 0; 
+  font-size: 11px; 
+  font-weight: 600; 
+}
+
+.btn.danger { 
+  border-color: #fee2e2; 
+  color: #ef4444; 
+  background: #fef2f2; 
+}
+
+.page-title-row { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 12px; 
+  gap: 12px; 
+  width: 100%;
+}
+
+.page-main-title { 
+  font-size: 24px; 
+  font-weight: 800; 
+  color: #111827; 
+  margin: 0; 
+}
+
+.date-controls { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  flex-wrap: wrap; 
+}
+
+.mode-toggle { 
+  display: inline-flex; 
+  background: #f3f4f6; 
+  border-radius: 6px; 
+  padding: 1px; 
+}
+
+.mode-btn { 
+  border: none; 
+  background: transparent; 
+  padding: 2px 10px; 
+  border-radius: 4px; 
+  font-size: 12px; 
+  font-weight: 700; 
+  color: #6b7280; 
+  cursor: pointer; 
+  line-height: 1; 
+}
+
+.mode-btn.active { 
+  background: #0f6fff; 
+  color: #ffffff; 
+}
+
+.period-fields { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 6px; 
+}
+
+.period-fields > p {
+  font-size: 10px;
+  font-weight: 600;
+  color: #6b7280;
+  margin: 0 2px;
+}
+
+.input-chip { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 6px; 
+  padding: 4px 8px; 
+  border: 1px solid #d1d5db; 
+  background: #ffffff; 
+  border-radius: 6px; 
+}
+
+.input-chip p { 
+  margin: 0; 
+  font-size: 12px; 
+  font-weight: 600; 
+  color: #111827; 
+}
+
+.btn-primary { 
+  border: 1px solid #8b5cf6; 
+  background: #8b5cf6; 
+  color: #ffffff; 
+  border-radius: 6px; 
+  padding: 6px 12px; 
+  display: inline-flex; 
+  align-items: center; 
+}
+
+.btn-primary p { 
+  margin: 0; 
+  font-size: 12px; 
+  font-weight: 700; 
+}
+
+.section-wrapper { 
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.section-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  margin-bottom: 10px; 
+}
+
+.section-title { 
+  font-size: 15px; 
+  font-weight: 700; 
+  color: #111827; 
+  margin: 0; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.section-title::before { 
+  content: ''; 
+  display: block; 
+  width: 4px; 
+  height: 15px; 
+  background: #0f6fff; 
+  border-radius: 2px; 
+}
+
+.filter-btn-group { 
+  display: flex; 
+  gap: 4px; 
+  background: #f3f4f6; 
+  padding: 1px; 
+  border-radius: 6px; 
+}
+
+.filter-btn { 
+  border: none; 
+  background: transparent; 
+  padding: 2px 8px; 
+  border-radius: 4px; 
+  font-size: 10px; 
+  font-weight: 600; 
+  color: #6b7280; 
+  cursor: pointer; 
+  line-height: 1; 
+}
+
+.filter-btn.active { 
+  background: #0f6fff; 
+  color: #ffffff; 
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1); 
+}
+
+.stats-split-container { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 16px; 
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.stat-group-box { 
+  background: #ffffff; 
+  border: 1px solid #e5e7eb; 
+  border-radius: 10px; 
+  padding: 10px 14px; 
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03); 
+  display: flex; 
+  flex-direction: column; 
+  height: 100%; 
+}
+
+.stat-group-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  margin-bottom: 8px; 
+  padding-bottom: 6px; 
+  border-bottom: 1px solid #f3f4f6; 
+}
+
+.stat-group-icon { 
+  color: #2563eb; 
+  font-size: 13px; 
+  background: #eff6ff; 
+  width: 22px; 
+  height: 22px; 
+  border-radius: 4px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+}
+
+.stat-group-title { 
+  font-size: 13px; 
+  font-weight: 700; 
+  color: #1f2937; 
+  margin: 0; 
+}
+
+.stat-stack { 
+  display: flex; 
+  flex-direction: row; 
+  gap: 8px; 
+  flex: 1; 
+}
+
+.stat-card-h { 
+  flex: 1; 
+  background: #f9fafb; 
+  border: 1px solid #e5e7eb; 
+  border-radius: 6px; 
+  padding: 8px 10px; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center; 
+  gap: 2px; 
+  transition: all 0.2s; 
+}
+
+.stat-card-h:hover { 
+  background: #eff6ff; 
+  border-color: #bfdbfe; 
+}
+
+.card-left { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  width: 100%; 
+}
+
+.card-title { 
+  font-size: 12px; 
+  font-weight: 600; 
+  color: #4b5563; 
+  margin: 0; 
+}
+
+.card-value-wrap { 
+  display: flex; 
+  align-items: baseline; 
+  gap: 2px; 
+}
+
+.card-val { 
+  font-size: 18px; 
+  font-weight: 800; 
+  color: #111827; 
+  line-height: 1; 
+}
+
+.card-unit { 
+  font-size: 11px; 
+  font-weight: 600; 
+  color: #6b7280; 
+}
+
+.card-sub-row { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-top: 4px; 
+}
+
+.card-sub { 
+  font-size: 10px; 
+  color: #9ca3af; 
+  margin: 0; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+}
+
+.card-trend { 
+  font-size: 11px; 
+  font-weight: 600; 
+  display: flex; 
+  align-items: center; 
+  gap: 2px; 
+}
+
+.trend-up { color: #dc2626; }
+.trend-down { color: #2563eb; }
+
+.toggle-btn-container { 
+  display: flex; 
+  justify-content: flex-end; 
+  margin-bottom: 8px; 
+  gap: 12px;
+}
+
+.toggle-btn { 
+  background: transparent; 
+  border: none; 
+  color: #6b7280; 
+  font-size: 12px; 
+  font-weight: 600; 
+  cursor: pointer; 
+  display: flex; 
+  align-items: center; 
+  gap: 4px; 
+  padding: 4px 8px; 
+  border-radius: 4px; 
+}
+
+.toggle-btn:hover { 
+  background: #f3f4f6; 
+  color: #374151; 
+}
+
+.toggle-content { 
+  display: none; 
+}
+
+.toggle-content.show { 
+  display: block; 
+  animation: fadeIn 0.3s ease; 
+}
+
+@keyframes fadeIn { 
+  from { 
+    opacity: 0; 
+    transform: translateY(-5px); 
+  } 
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  } 
+}
+
+.summary-grid-compact { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 16px;
+  width: 100%;
+}
+
+.summary-box-compact { 
+  background: #ffffff; 
+  border: 1px solid #e5e7eb; 
+  border-radius: 10px; 
+  overflow: hidden; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+}
+
+.summary-list-row {
+  display: grid; 
+  grid-template-columns: 80px 1fr 90px; 
+  align-items: center; 
+  padding: 4px 14px; 
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.summary-list-container .summary-list-row:last-child {
+  border-bottom: none;
+}
+
+.summary-header-compact { 
+  background: #f9fafb; 
+  padding: 10px 14px; 
+  font-size: 13px; 
+  font-weight: 700; 
+  color: #111827; 
+  margin: 0; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  border-bottom: 1px solid #e5e7eb; 
+}
+
+.summary-header-compact i { 
+  color: #9ca3af; 
+  font-size: 12px; 
+}
+
+.sl-label { 
+  font-size: 12px; 
+  color: #6b7280; 
+  font-weight: 500; 
+}
+
+.sl-value { 
+  font-size: 12px; 
+  color: #111827; 
+  font-weight: 600; 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+}
+
+.sl-change { 
+  font-size: 11px; 
+  font-weight: 600; 
+  text-align: right; 
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end; 
+  gap: 3px; 
+}
+
+.chart-card { 
+  background: #ffffff; 
+  border: 1px solid #e5e7eb; 
+  border-radius: 10px; 
+  padding: 14px; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+  position: relative;
+  width: 100%;
+}
+
+.chart-card-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin-bottom: 8px; 
+}
+
+.chart-title-small { 
+  font-size: 13px; 
+  font-weight: 600; 
+  color: #374151; 
+  margin: 0; 
+}
+
+.chart-container-large { 
+  height: 240px; 
+  width: 100%; 
+}
+
+.chart-container-medium { 
+  height: 200px; 
+  width: 100%; 
+}
+
+.chart-container-small { 
+  height: 160px; 
+  width: 100%; 
+}
+
+.prod-cards { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 10px; 
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+.prod-card { 
+  background: #ffffff; 
+  border: 1px solid #e5e7eb; 
+  border-radius: 8px; 
+  padding: 12px 14px; 
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05); 
+  display: flex; 
+  flex-direction: column;
+  gap: 6px;
+  min-height: 80px;
+}
+
+.prod-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.prod-card p {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.prod-label { 
+  font-size: 11px; 
+  color: #6b7280; 
+  font-weight: 600;
+}
+
+.prod-val { 
+  font-size: 22px; 
+  font-weight: 800; 
+  color: #111827; 
+}
+
+.prod-trend { 
+  font-size: 11px; 
+  font-weight: 600;
+  align-self: flex-end;
+  margin-top: auto;
+}
+
+.prod-charts { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 16px;
+  width: 100%;
+}
+
+.issue-main-container {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.issue-summary-left {
+  min-width: 200px;
+  padding-right: 20px;
+  border-right: 1px solid #bfdbfe;
+}
+
+.issue-summary-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.issue-cards-right {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  flex: 1;
+}
+
+.issue-card {
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.issue-card .icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #1e40af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.issue-card .issue-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.issue-card .issue-card-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.issue-card .issue-card-count {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e40af;
+  margin: 2px 0 4px 0;
+  line-height: 1;
+}
+
+.issue-card .issue-details {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.issue-card .issue-detail-txt {
+  font-size: 10px;
+  color: #6b7280;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.data-table-container {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  width: 100%;
+}
+
+.table-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table-title::before {
+  content: "";
+  width: 3px;
+  height: 12px;
+  border-radius: 999px;
+  background: #0f6fff;
+  flex-shrink: 0;
+}
+
+.table-title p {
+  margin: 0;
+}
+
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+table.data-table thead th {
+  padding: 8px 16px;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  font-weight: 600;
+  color: #4b5563;
+  text-align: left;
+  white-space: nowrap;
+}
+
+table.data-table tbody td {
+  padding: 10px 16px;
+  border-top: 1px solid #f3f4f6;
+  color: #111827;
+  vertical-align: top;
+}
+
+table.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.badge-count {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 1;
+}
+
+td p .badge-count {
+  margin-bottom: 2px;
+}
+
+.analysis-grid { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 16px;
+  width: 100%;
+}
+
+.analysis-card { 
+  background: #ffffff; 
+  border: 1px solid #e5e7eb; 
+  border-radius: 10px; 
+  padding: 14px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 12px; 
+}
+
+.analysis-header { 
+  font-size: 13px; 
+  font-weight: 700; 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+  margin: 0; 
+}
+
+.bg-red-light { background-color: #fef2f2 !important; }
+.bg-blue-light { background-color: #eff6ff !important; }
+.text-red { color: #dc2626 !important; }
+.text-blue { color: #2563eb !important; }
+</style>
+</head>
+<body>
+<div class="slide-root">
+<div class="layout">
+<aside class="sidebar">
+<div class="sidebar-top">
+<p>SIIC 부천센터 업무 시스템</p>
+</div>
+<div class="sidebar-user">
+<div class="avatar"><p>슬</p></div>
+<div class="sidebar-user-text">
+<p class="user-name">박슬예</p>
+<p class="user-role">관리자</p>
+</div>
+<button class="sidebar-toggle"><p>◀</p></button>
+</div>
+<nav class="nav">
+  <div class="nav-item">
+    <p class="nav-label" style="font-weight:700;">통합 운영 현황판</p>
+  </div>
+  <div class="nav-item">
+    <p class="nav-label" style="font-weight:700;">크리티컬 이슈 현황</p>
+  </div>
+  <div class="nav-item">
+    <p class="nav-label" style="font-weight:700;">CS 현황</p>
+  </div>
+  <div class="nav-item indent-1">
+    <p class="nav-label">쇼핑몰 고객지원팀</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">쇼핑몰</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">마켓플러스</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">타사유입</p>
+  </div>
+  <div class="nav-item indent-1 nav-item--active">
+    <p class="nav-label">호스팅 고객지원팀</p>
+  </div>
+  <div class="nav-item indent-2 nav-item--active">
+    <span class="nav-bullet active"></span>
+    <p class="nav-label">웹호스팅</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">서버호스팅</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">개인정보</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">창업센터</p>
+  </div>
+  <div class="nav-item indent-1">
+    <p class="nav-label">커머스 코칭팀</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">관리몰</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">유튜브</p>
+  </div>
+  <div class="nav-item indent-1">
+    <p class="nav-label">온보딩 코칭팀</p>
+  </div>
+  <div class="nav-item indent-2">
+    <span class="nav-bullet"></span>
+    <p class="nav-label">PRO</p>
+  </div>
+</nav>
+</aside>
+
+<main class="main">
+<header class="global-header">
+<div class="gh-left">
+<p>SIIC 부천센터</p>
+<p class="sep">|</p>
+<p>CS 현황</p>
+<p class="meta">(업데이트 주기: 30분~1시간)</p>
+</div>
+<div class="gh-right">
+<button class="btn"><p>관리자 승인</p></button>
+<button class="btn danger"><p>로그아웃</p></button>
+</div>
+</header>
+
+<div class="page-title-row">
+<div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+<h1 class="page-main-title">호스팅 CS 현황</h1>
+<div class="filter-btn-group">
+<button class="filter-btn active"><p>호스팅 단독</p></button>
+<button class="filter-btn"><p>통합대응</p></button>
+</div>
+</div>
+<div class="date-controls" style="flex-shrink: 0;">
+<div class="mode-toggle">
+<button class="mode-btn"><p>일자</p></button>
+<button class="mode-btn active"><p>기간</p></button>
+</div>
+<div class="period-fields">
+<div class="input-chip">
+<p contenteditable="true">2025</p>
+</div>
+<p>년</p>
+<div class="input-chip">
+<p contenteditable="true">11</p>
+</div>
+<p>월</p>
+<div class="input-chip">
+<p contenteditable="true">4</p>
+</div>
+<p>주차</p>
+</div>
+<button class="btn-primary">
+<p>리포트 등록</p>
+</button>
+</div>
+</div>
+
+<div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+    <div style="display: flex; align-items: start; gap: 8px;">
+      <div style="width: 20px; height: 20px; background: #0f6fff; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+        <i class="fa-solid fa-check" style="color: white; font-size: 10px;"></i>
+      </div>
+      <div>
+        <p style="font-size: 12px; font-weight: 700; color: #111827; margin: 0 0 4px 0;">호스팅 단독</p>
+        <p style="font-size: 11px; color: #6b7280; margin: 0; line-height: 1.5;">순수 호스팅 서비스 (유선Q)</p>
+      </div>
+    </div>
+    <div style="display: flex; align-items: start; gap: 8px;">
+      <div style="width: 20px; height: 20px; background: #6b7280; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px;">
+        <i class="fa-solid fa-layer-group" style="color: white; font-size: 10px;"></i>
+      </div>
+      <div>
+        <p style="font-size: 12px; font-weight: 700; color: #111827; margin: 0 0 4px 0;">통합대응</p>
+        <p style="font-size: 11px; color: #6b7280; margin: 0; line-height: 1.5;">호스팅 서비스 + 쇼핑몰 명의변경Q + 카페24 대표번호</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-header" style="margin-bottom: 8px;">
+<div class="section-title"><p>CS 현황 대시보드</p></div>
+<div class="filter-btn-group">
+<button class="filter-btn active"><p>누적</p></button>
+<button class="filter-btn"><p>평균</p></button>
+</div>
+</div>
+
+<div class="stats-split-container">
+<div class="stat-group-box">
+<div class="stat-group-header">
+<div class="stat-group-icon"><i class="fa-solid fa-phone"></i></div>
+<p class="stat-group-title">유선</p>
+</div>
+<div class="stat-stack">
+<div class="stat-card-h">
+<div class="card-left"><p class="card-title">인입</p></div>
+<div class="card-value-wrap"><span class="card-val">268</span><span class="card-unit">건</span></div>
+<div class="card-sub-row"><p class="card-sub">265→268</p><div class="card-trend trend-up">↑ 1.1%</div></div>
+</div>
+<div class="stat-card-h">
+<div class="card-left"><p class="card-title">응대</p></div>
+<div class="card-value-wrap"><span class="card-val">235</span><span class="card-unit">건</span></div>
+<div class="card-sub-row"><p class="card-sub">235→235</p><div class="card-trend" style="color: #6b7280;">→ 0.0%</div></div>
+</div>
+<div class="stat-card-h">
+<div class="card-left"><p class="card-title">응대율</p></div>
+<div class="card-value-wrap"><span class="card-val">87.6</span><span class="card-unit">%</span></div>
+<div class="card-sub-row"><p class="card-sub">88.7→87.6</p><div class="card-trend trend-down">↓ 1.1p</div></div>
+</div>
+</div>
+</div>
+
+<div class="stat-group-box">
+<div class="stat-group-header">
+<div class="stat-group-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+<p class="stat-group-title">게시판</p>
+</div>
+<div class="stat-stack">
+<div class="stat-card-h">
+<div class="card-left"><p class="card-title">접수</p></div>
+<div class="card-value-wrap"><span class="card-val">288</span><span class="card-unit">건</span></div>
+<div class="card-sub-row"><p class="card-sub">302→288</p><div class="card-trend trend-down">↓ 4.6%</div></div>
+</div>
+<div class="stat-card-h">
+<div class="card-left"><p class="card-title">처리</p></div>
+<div class="card-value-wrap"><span class="card-val">255</span><span class="card-unit">건</span></div>
+<div class="card-sub-row"><p class="card-sub">282→255</p><div class="card-trend trend-down">↓ 9.6%</div></div>
+</div>
+<div class="stat-card-h">
+<div class="card-left"><p class="card-title">답변율</p></div>
+<div class="card-value-wrap"><span class="card-val">88.5</span><span class="card-unit">%</span></div>
+<div class="card-sub-row"><p class="card-sub">93.2→88.5</p><div class="card-trend trend-down">↓ 4.7p</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section-wrapper">
+<div class="section-header">
+<div class="section-title"><p>주차별 추이</p></div>
+<div class="filter-btn-group">
+<button class="filter-btn"><p>누적</p></button>
+<button class="filter-btn active"><p>평균</p></button>
+</div>
+</div>
+<div class="prod-charts">
+<div class="chart-card">
+<div class="chart-card-header">
+<p class="chart-title-small">유선 주차별 추이</p>
+</div>
+<div class="chart-container-medium">
+<canvas id="phoneWeeklyChart"></canvas>
+</div>
+</div>
+<div class="chart-card">
+<div class="chart-card-header">
+<p class="chart-title-small">게시판 주차별 추이</p>
+</div>
+<div class="chart-container-medium">
+<canvas id="boardWeeklyChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section-wrapper">
+<div class="section-header">
+<div class="section-title"><p>일별 추이</p></div>
+<div class="filter-btn-group">
+<button class="filter-btn"><p>누적</p></button>
+<button class="filter-btn active"><p>평균</p></button>
+</div>
+</div>
+<div class="prod-charts" style="grid-template-columns: 1fr; gap: 12px;">
+<div class="chart-card">
+<p class="chart-title-small">유선 일별 추이</p>
+<div class="chart-container-medium">
+<canvas id="phoneDailyChart"></canvas>
+</div>
+</div>
+<div class="chart-card">
+<p class="chart-title-small">게시판 일별 추이</p>
+<div class="chart-container-medium">
+<canvas id="boardDailyChart"></canvas>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section-wrapper">
+<div class="section-header">
+<div class="section-title"><p>월별 추이</p></div>
+<div class="filter-btn-group">
+<button class="filter-btn"><p>누적</p></button>
+<button class="filter-btn active"><p>평균</p></button>
+</div>
+</div>
+<div class="chart-card">
+<div class="chart-container-large">
+<canvas id="timeSeriesChart"></canvas>
+</div>
+</div>
+</div>
+
+<div class="section-wrapper">
+<div class="toggle-btn-container">
+<button class="toggle-btn" id="toggleSummaryBtn">
+↓ 전월대비 현황 보기
+</button>
+<button class="toggle-btn" id="toggleYearBtn">
+↓ 전년동월 대비 현황 보기
+</button>
+</div>
+<div class="toggle-content" id="summaryContent">
+<div class="summary-grid-compact">
+<div class="summary-box-compact">
+<div class="summary-header-compact">
+<p>유선(전월대비)</p>
+<i class="fa-solid fa-circle-info"></i>
+</div>
+<div class="summary-list-container">
+<div class="summary-list-row">
+<div class="sl-label"><p>인입건</p></div>
+<div class="sl-value"><p>456 → 428</p></div>
+<div class="sl-change trend-down"><p>↓ 6.1%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>응대건</p></div>
+<div class="sl-value"><p>423 → 398</p></div>
+<div class="sl-change trend-down"><p>↓ 5.9%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>응대율</p></div>
+<div class="sl-value"><p>92.8% → 93.0%</p></div>
+<div class="sl-change trend-up"><p>↑ 0.2%p</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>CPD</p></div>
+<div class="sl-value"><p>47 → 44</p></div>
+<div class="sl-change trend-down"><p>↓ 6.4%</p></div>
+</div>
+</div>
+</div>
+
+<div class="summary-box-compact">
+<div class="summary-header-compact">
+<p>게시판(전월대비)</p>
+<i class="fa-solid fa-circle-info"></i>
+</div>
+<div class="summary-list-container">
+<div class="summary-list-row">
+<div class="sl-label"><p>문의건</p></div>
+<div class="sl-value"><p>834 → 892</p></div>
+<div class="sl-change trend-up"><p>↑ 7.0%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>처리건</p></div>
+<div class="sl-value"><p>827 → 886</p></div>
+<div class="sl-change trend-up"><p>↑ 7.1%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>답변율</p></div>
+<div class="sl-value"><p>99.2% → 99.3%</p></div>
+<div class="sl-change trend-up"><p>↑ 0.1%p</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>WPD</p></div>
+<div class="sl-value"><p>92 → 99</p></div>
+<div class="sl-change trend-up"><p>↑ 7.6%</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="toggle-content" id="yearContent">
+<div class="summary-grid-compact">
+<div class="summary-box-compact">
+<div class="summary-header-compact">
+<p>유선(전년동월 대비)</p>
+<i class="fa-solid fa-circle-info"></i>
+</div>
+<div class="summary-list-container">
+<div class="summary-list-row">
+<div class="sl-label"><p>인입건</p></div>
+<div class="sl-value"><p>445 → 428</p></div>
+<div class="sl-change trend-down"><p>↓ 3.8%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>응대건</p></div>
+<div class="sl-value"><p>408 → 398</p></div>
+<div class="sl-change trend-down"><p>↓ 2.5%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>응대율</p></div>
+<div class="sl-value"><p>91.7% → 93.0%</p></div>
+<div class="sl-change trend-up"><p>↑ 1.3%p</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>CPD</p></div>
+<div class="sl-value"><p>46 → 44</p></div>
+<div class="sl-change trend-down"><p>↓ 4.3%</p></div>
+</div>
+</div>
+</div>
+
+<div class="summary-box-compact">
+<div class="summary-header-compact">
+<p>게시판(전년동월 대비)</p>
+<i class="fa-solid fa-circle-info"></i>
+</div>
+<div class="summary-list-container">
+<div class="summary-list-row">
+<div class="sl-label"><p>문의건</p></div>
+<div class="sl-value"><p>912 → 892</p></div>
+<div class="sl-change trend-down"><p>↓ 2.2%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>처리건</p></div>
+<div class="sl-value"><p>904 → 886</p></div>
+<div class="sl-change trend-down"><p>↓ 2.0%</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>답변율</p></div>
+<div class="sl-value"><p>99.1% → 99.3%</p></div>
+<div class="sl-change trend-up"><p>↑ 0.2%p</p></div>
+</div>
+<div class="summary-list-row">
+<div class="sl-label"><p>WPD</p></div>
+<div class="sl-value"><p>103 → 99</p></div>
+<div class="sl-change trend-down"><p>↓ 3.9%</p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section-wrapper">
+<div class="section-header">
+<div class="section-title"><p>주요 이슈</p></div>
+<div class="filter-btn-group">
+<button class="filter-btn"><p>주별</p></button>
+<button class="filter-btn active"><p>월별</p></button>
+</div>
+</div>
+
+<div class="issue-main-container">
+<div class="issue-summary-left">
+<p class="issue-summary-title">주요 이슈 요약 - 해소완료 1건</p>
+</div>
+<div class="issue-cards-right">
+<div class="issue-card">
+<div class="icon"><i class="fa-solid fa-code-branch"></i></div>
+<div class="issue-text-wrap">
+<p class="issue-card-title">배포 이슈</p>
+<p class="issue-card-count">0건</p>
+<div class="issue-details">
+<p class="issue-detail-txt">불만: 0건</p>
+<p class="issue-detail-txt">보상: 0건</p>
+</div>
+</div>
+</div>
+<div class="issue-card">
+<div class="icon"><i class="fa-solid fa-server"></i></div>
+<div class="issue-text-wrap">
+<p class="issue-card-title">장애 이슈</p>
+<p class="issue-card-count">0건</p>
+<div class="issue-details">
+<p class="issue-detail-txt">불만: 0건</p>
+<p class="issue-detail-txt">보상: 0건</p>
+</div>
+</div>
+</div>
+<div class="issue-card">
+<div class="icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+<div class="issue-text-wrap">
+<p class="issue-card-title">기타 이슈</p>
+<p class="issue-card-count">1건</p>
+<div class="issue-details">
+<p class="issue-detail-txt">불만: 0건</p>
+<p class="issue-detail-txt">보상: 0건</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="toggle-btn-container">
+<button class="toggle-btn" id="toggleIssueBtn">
+↓ 이슈 상세 내역 보기
+</button>
+</div>
+
+<div class="toggle-content" id="issueTablesArea">
+<div class="data-table-container">
+<div class="table-title"><p>기타 이슈 (1건)</p></div>
+<table class="data-table">
+<thead>
+<tr>
+<th style="width:90px;"><p>발생일자</p></th>
+<th style="width:200px;"><p>인입고객사</p></th>
+<th><p>현상</p></th>
+<th style="width:180px;"><p>원인</p></th>
+<th><p>조치사항</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p>25.11.20</p></td>
+<td><p><span class="badge-count">총 13건</span><br/>유선 3건, 게시판 10건 (계정 10개)</p></td>
+<td><p>인증서 발급 지연 현상 발생</p></td>
+<td><p>Sectigo 시스템 CT 로그 중복 오류</p></td>
+<td><p>Sectigo측 정상 조치 완료</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="section-wrapper">
+<div class="section-header">
+<div class="section-title"><p>카테고리별 증감 분석</p></div>
+<div class="filter-btn-group">
+<button class="filter-btn active"><p>주별</p></button>
+<button class="filter-btn"><p>월별</p></button>
+</div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%;">
+<div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; display: flex; flex-direction: column;">
+<p style="font-size: 14px; font-weight: 700; color: #dc2626; margin: 0 0 12px 0; display: flex; align-items: center; gap: 6px;">
+<i class="fa-solid fa-arrow-trend-up"></i> 증가한 카테고리 TOP5
+</p>
+<div style="height: 200px; width: 100%; margin-bottom: 12px;">
+<canvas id="increasedCatChart"></canvas>
+</div>
+<table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+<thead>
+<tr style="background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: #6b7280; width: 50%;">카테고리</th>
+<th style="padding: 6px 8px; text-align: center; font-weight: 600; color: #6b7280; width: 25%;">증감 건수</th>
+<th style="padding: 6px 8px; text-align: center; font-weight: 600; color: #6b7280; width: 25%;">증감율</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #fef2f2;">
+<td style="padding: 6px 8px; border-bottom: 1px solid #fee2e2;">웹호스팅 &gt; 기타</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #fee2e2;">+31</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #fee2e2;">+81.6%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px; border-bottom: 1px solid #f3f4f6;">도메인 &gt; 취소/환불</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #f3f4f6;">+8</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #f3f4f6;">+47.1%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px; border-bottom: 1px solid #f3f4f6;">웹호스팅 &gt; 접속오류</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #f3f4f6;">+7</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #f3f4f6;">+12.3%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px; border-bottom: 1px solid #f3f4f6;">도메인 &gt; DNS관리</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #f3f4f6;">+6</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626; border-bottom: 1px solid #f3f4f6;">+12.8%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px;">매니지드워드프레스 &gt; 설정/관리</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626;">+6</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #dc2626;">+12.5%</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 16px; display: flex; flex-direction: column;">
+<p style="font-size: 14px; font-weight: 700; color: #2563eb; margin: 0 0 12px 0; display: flex; align-items: center; gap: 6px;">
+<i class="fa-solid fa-arrow-trend-down"></i> 감소한 카테고리 TOP5
+</p>
+<div style="height: 200px; width: 100%; margin-bottom: 12px;">
+<canvas id="decreasedCatChart"></canvas>
+</div>
+<table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+<thead>
+<tr style="background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+<th style="padding: 6px 8px; text-align: left; font-weight: 600; color: #6b7280; width: 50%;">카테고리</th>
+<th style="padding: 6px 8px; text-align: center; font-weight: 600; color: #6b7280; width: 25%;">증감 건수</th>
+<th style="padding: 6px 8px; text-align: center; font-weight: 600; color: #6b7280; width: 25%;">감소율</th>
+</tr>
+</thead>
+<tbody>
+<tr style="background: #eff6ff;">
+<td style="padding: 6px 8px; border-bottom: 1px solid #dbeafe;">웹호스팅 &gt; 설정/관리</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #dbeafe;">-23</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #dbeafe;">-13.1%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px; border-bottom: 1px solid #f3f4f6;">웹호스팅 &gt; 취소/환불</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #f3f4f6;">-17</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #f3f4f6;">-18.3%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px; border-bottom: 1px solid #f3f4f6;">보안인증서 &gt; 신규/연장/변경</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #f3f4f6;">-10</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #f3f4f6;">-16.4%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px; border-bottom: 1px solid #f3f4f6;">웹호스팅 &gt; 신규/연장/변경</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #f3f4f6;">-9</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb; border-bottom: 1px solid #f3f4f6;">-14.1%</td>
+</tr>
+<tr>
+<td style="padding: 6px 8px;">웹메일 &gt; 설정/관리</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb;">-8</td>
+<td style="padding: 6px 8px; text-align: center; font-weight: 600; color: #2563eb;">-20.5%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div class="section-wrapper" style="margin-top: 32px;">
+  <div class="section-header">
+    <div class="section-title"><p>생산성 지표</p></div>
+    <div class="filter-btn-group">
+      <button class="filter-btn active"><p>주별</p></button>
+      <button class="filter-btn"><p>월별</p></button>
+    </div>
+  </div>
+
+  <div class="prod-cards">
+    <div class="prod-card">
+      <div class="prod-info">
+        <p class="prod-label">팀 CPD</p>
+        <p class="prod-val">26건</p>
+      </div>
+      <p class="prod-trend trend-neutral">→ 0.0%</p>
+    </div>
+    <div class="prod-card">
+      <div class="prod-info">
+        <p class="prod-label">팀 WPD</p>
+        <p class="prod-val">74건</p>
+      </div>
+      <p class="prod-trend trend-down">↓ 3.4%</p>
+    </div>
+    <div class="prod-card">
+      <div class="prod-info">
+        <p class="prod-label">개인 CPD</p>
+        <p class="prod-val">58건</p>
+      </div>
+      <p class="prod-trend trend-up">↑ 3.6%</p>
+    </div>
+    <div class="prod-card">
+      <div class="prod-info">
+        <p class="prod-label">개인 WPD</p>
+        <p class="prod-val">82건</p>
+      </div>
+      <p class="prod-trend trend-up">↑ 5.1%</p>
+    </div>
+  </div>
+
+  <div class="prod-charts">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <p class="chart-title-small">팀 생산성</p>
+      </div>
+      <div style="height: 220px; width: 100%;">
+        <canvas id="teamProdChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <p class="chart-title-small">개인 생산성</p>
+        <div style="display: flex; gap: 12px; font-size: 10px;">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span style="width: 12px; height: 12px; background: #60a5fa; border-radius: 2px; display: inline-block;"></span>
+            <span style="color: #2563eb; font-weight: 600;">유선</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <span style="width: 12px; height: 12px; background: #a78bfa; border-radius: 2px; display: inline-block;"></span>
+            <span style="color: #7c3aed; font-weight: 600;">게시판</span>
+          </div>
+        </div>
+      </div>
+      <div style="height: 220px; width: 100%;">
+        <canvas id="personalProdChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-wrapper" style="margin-top: 32px;">
+  <div class="section-header">
+    <div class="section-title"><p>사용자 추이</p></div>
+  </div>
+
+  <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+      <div style="display: flex; align-items: start; gap: 6px;">
+        <i class="fa-solid fa-circle" style="color: #3b82f6; font-size: 8px; margin-top: 4px;"></i>
+        <div>
+          <p style="font-size: 11px; font-weight: 600; color: #111827; margin: 0 0 2px 0;">라이브 사용자</p>
+          <p style="font-size: 10px; color: #6b7280; margin: 0; line-height: 1.4;">호스팅 메인 상품을 사용중인 자아이디 갯수</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: start; gap: 6px;">
+        <i class="fa-solid fa-circle" style="color: #9ca3af; font-size: 8px; margin-top: 4px;"></i>
+        <div>
+          <p style="font-size: 11px; font-weight: 600; color: #111827; margin: 0 0 2px 0;">연장 사용자</p>
+          <p style="font-size: 10px; color: #6b7280; margin: 0; line-height: 1.4;">호스팅 메인 상품 라이브사용자 중 해당 월에 신규결제 하지 않은 자아이디 갯수</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: start; gap: 6px;">
+        <i class="fa-solid fa-circle" style="color: #ef4444; font-size: 8px; margin-top: 4px;"></i>
+        <div>
+          <p style="font-size: 11px; font-weight: 600; color: #111827; margin: 0 0 2px 0;">신규사용자</p>
+          <p style="font-size: 10px; color: #6b7280; margin: 0; line-height: 1.4;">호스팅 메인 상품을 신규로 결제한 자아이디 갯수</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: start; gap: 6px;">
+        <i class="fa-solid fa-circle" style="color: #9ca3af; font-size: 8px; margin-top: 4px;"></i>
+        <div>
+          <p style="font-size: 11px; font-weight: 600; color: #111827; margin: 0 0 2px 0;">이탈자</p>
+          <p style="font-size: 10px; color: #6b7280; margin: 0; line-height: 1.4;">이탈자 수 (자아이디 기준) / 라이브 사용자 수</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <p class="chart-title-small">라이브+연장 사용자 추이</p>
+      </div>
+      <div style="height: 280px; width: 100%;">
+        <canvas id="liveExtendUserChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <p class="chart-title-small">신규사용자+이탈자 추이</p>
+      </div>
+      <div style="height: 280px; width: 100%;">
+        <canvas id="newChurnUserChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 전월대비 토글
+    const toggleSummaryBtn = document.getElementById('toggleSummaryBtn');
+    const summaryContent = document.getElementById('summaryContent');
+    if (toggleSummaryBtn && summaryContent) {
+        toggleSummaryBtn.addEventListener('click', function() {
+            const isHidden = summaryContent.style.display === '' || summaryContent.style.display === 'none';
+            if (isHidden) {
+                summaryContent.style.display = 'block';
+                summaryContent.classList.add('show');
+                toggleSummaryBtn.innerHTML = '↑ 전월대비 현황 접기';
+            } else {
+                summaryContent.style.display = 'none';
+                summaryContent.classList.remove('show');
+                toggleSummaryBtn.innerHTML = '↓ 전월대비 현황 보기';
+            }
+        });
+    }
+
+    // 전년동월 대비 토글
+    const toggleYearBtn = document.getElementById('toggleYearBtn');
+    const yearContent = document.getElementById('yearContent');
+    if (toggleYearBtn && yearContent) {
+        toggleYearBtn.addEventListener('click', function() {
+            const isHidden = yearContent.style.display === '' || yearContent.style.display === 'none';
+            if (isHidden) {
+                yearContent.style.display = 'block';
+                yearContent.classList.add('show');
+                toggleYearBtn.innerHTML = '↑ 전년동월 대비 현황 접기';
+            } else {
+                yearContent.style.display = 'none';
+                yearContent.classList.remove('show');
+                toggleYearBtn.innerHTML = '↓ 전년동월 대비 현황 보기';
+            }
+        });
+    }
+
+    // 이슈 상세 토글
+    const toggleIssueBtn = document.getElementById('toggleIssueBtn');
+    const issueTablesArea = document.getElementById('issueTablesArea');
+    if (toggleIssueBtn && issueTablesArea) {
+        toggleIssueBtn.addEventListener('click', function() {
+            const isHidden = issueTablesArea.style.display === '' || issueTablesArea.style.display === 'none';
+            if (isHidden) {
+                issueTablesArea.style.display = 'block';
+                issueTablesArea.classList.add('show');
+                toggleIssueBtn.innerHTML = '↑ 이슈 상세 내역 접기';
+            } else {
+                issueTablesArea.style.display = 'none';
+                issueTablesArea.classList.remove('show');
+                toggleIssueBtn.innerHTML = '↓ 이슈 상세 내역 보기';
+            }
+        });
+    }
+
+    // 일자/기간 토글
+    const modeToggle = document.querySelector('.mode-toggle');
+    if (modeToggle) {
+        const btns = modeToggle.querySelectorAll('.mode-btn');
+        btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btns.forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
+            });
+        });
+    }
+
+    Chart.register(ChartDataLabels);
+    Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#6b7280';
+
+    const centerAlignedDataLabels = {
+        display: function(context) { return context.dataset.data[context.dataIndex] > 0; },
+        font: { weight: 'bold', size: 10 },
+        anchor: 'center', align: 'center',
+        formatter: Math.round
+    };
+
+    // 유선 주차별
+    new Chart(document.getElementById('phoneWeeklyChart').getContext('2d'), {
+        data: {
+            labels: ['10월4주', '11월1주', '11월2주', '11월3주', '11월4주', '평균'],
+            datasets: [
+                { type: 'bar', label: '인입', data: [291, 267, 272, 265, 268, 274], backgroundColor: '#93c5fd', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#1e3a8a' } },
+                { type: 'bar', label: '응대', data: [262, 233, 246, 235, 235, 242], backgroundColor: '#60a5fa', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#ffffff' } },
+                { type: 'line', label: '응대율(%)', data: [90.2, 87.2, 90.3, 88.7, 87.6, 88.5], borderColor: '#ec4899', backgroundColor: '#ec4899', borderWidth: 2, yAxisID: 'y1', tension: 0.1, datalabels: { align: 'top', color: '#ec4899', formatter: (val) => val.toFixed(1) + '%' } }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, padding: 20 } } }, scales: { y: { beginAtZero: true, max: 500, ticks: { stepSize: 100 } }, y1: { display: false, min: -20, max: 120 }, x: { grid: { display: false } } } }
+    });
+
+    // 게시판 주차별
+    new Chart(document.getElementById('boardWeeklyChart').getContext('2d'), {
+        data: {
+            labels: ['10월4주', '11월1주', '11월2주', '11월3주', '11월4주', '평균'],
+            datasets: [
+                { type: 'bar', label: '접수', data: [257, 288, 301, 302, 288, 287], backgroundColor: '#93c5fd', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#1e3a8a' } },
+                { type: 'bar', label: '답변', data: [256, 285, 299, 282, 255, 275], backgroundColor: '#60a5fa', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#ffffff' } },
+                { type: 'line', label: '답변율(%)', data: [99.8, 98.8, 99.5, 93.2, 88.5, 95.9], borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', borderWidth: 2, yAxisID: 'y1', tension: 0.1, datalabels: { align: 'top', color: '#8b5cf6', formatter: (val) => val.toFixed(1) + '%' } }
+            ]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, padding: 20 } } }, scales: { y: { beginAtZero: true, max: 500, ticks: { stepSize: 100 } }, y1: { display: false, min: -20, max: 120 }, x: { grid: { display: false } } } }
+    });
+
+    // 유선 일별
+    new Chart(document.getElementById('phoneDailyChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['11.17', '11.18', '11.19', '11.20', '11.21', '11.24', '11.25', '11.26', '11.27', '11.28'],
+            datasets: [
+                { label: '인입', data: [306, 267, 253, 230, 267, 282, 264, 308, 223, 262], backgroundColor: '#93c5fd', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#1e3a8a' } },
+                { label: '응대', data: [278, 245, 225, 201, 224, 248, 235, 252, 204, 234], backgroundColor: '#60a5fa', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#ffffff' } },
+                { type: 'line', label: '응대율(%)', data: [90.8, 91.8, 88.9, 87.4, 83.9, 87.9, 89.0, 81.8, 91.5, 89.3], borderColor: '#ec4899', backgroundColor: '#ec4899', borderWidth: 2, yAxisID: 'y1', tension: 0.1, datalabels: { align: 'top', color: '#ec4899', display: true, formatter: (val) => val.toFixed(1) + '%' } }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, padding: 20 } } },
+            scales: { y: { beginAtZero: true, max: 600 }, y1: { display: false, min: -10, max: 120 }, x: { grid: { display: false } } }
+        }
+    });
+
+    // 게시판 일별
+    new Chart(document.getElementById('boardDailyChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['11.17', '11.18', '11.19', '11.20', '11.21', '11.24', '11.25', '11.26', '11.27', '11.28'],
+            datasets: [
+                { label: '접수', data: [306, 288, 274, 298, 244, 348, 233, 276, 254, 245], backgroundColor: '#93c5fd', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#1e3a8a' } },
+                { label: '답변', data: [297, 325, 281, 271, 235, 329, 260, 210, 249, 228], backgroundColor: '#60a5fa', yAxisID: 'y', datalabels: { ...centerAlignedDataLabels, color: '#ffffff' } },
+                { type: 'line', label: '답변율(%)', data: [97.1, 112.8, 102.6, 90.9, 96.3, 94.5, 111.6, 76.1, 98.0, 93.1], borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', borderWidth: 2, yAxisID: 'y1', tension: 0.1, datalabels: { align: 'top', color: '#8b5cf6', display: true, formatter: (val) => val.toFixed(1) + '%' } }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, padding: 20 } } },
+            scales: { y: { beginAtZero: true, max: 600 }, y1: { display: false, min: -10, max: 150 }, x: { grid: { display: false } } }
+        }
+    });
+
+    // 월별
+    const monthLabels = ['24.01', '24.02', '24.03', '24.04', '24.05', '24.06', '24.07', '24.08', '24.09', '24.10', '24.11', '24.12', '25.01', '25.02', '25.03', '25.04', '25.05', '25.06', '25.07', '25.08', '25.09', '25.10', '25.11'];
+    const phoneCounts = [434, 406, 438, 447, 442, 454, 418, 382, 364, 406, 370, 337, 360, 390, 415, 354, 349, 382, 320, 311, 306, 321, 268];
+    const boardCounts = [386, 348, 367, 336, 344, 344, 319, 314, 324, 335, 291, 280, 302, 316, 330, 294, 303, 326, 292, 317, 295, 305, 307];
+    const phoneRate = [84.7, 91.0, 88.7, 80.4, 77.6, 72.9, 72.5, 73.9, 77.4, 77.3, 79.1, 83.0, 86.1, 83.2, 83.8, 87.3, 85.1, 84.3, 86.5, 76.8, 86.5, 88.6, 88.5];
+    const boardRate = [99.9, 101.8, 101.3, 105.3, 100.3, 101.0, 101.3, 100.5, 104.2, 104.3, 102.2, 105.5, 104.6, 103.3, 102.5, 104.1, 101.2, 100.6, 101.9, 95.9, 102.7, 101.2, 93.6];
+
+    new Chart(document.getElementById('timeSeriesChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: monthLabels,
+            datasets: [
+                { label: '인입', data: phoneCounts, backgroundColor: '#3b82f6', yAxisID: 'y', stack: 'count', datalabels: { display: true, color: '#ffffff', align: 'center', anchor: 'center', font: { size: 8 }, formatter: (v) => v > 0 ? Math.round(v) : '' } },
+                { label: '접수', data: boardCounts, backgroundColor: '#93c5fd', yAxisID: 'y', stack: 'count', datalabels: { display: true, color: '#1e3a8a', align: 'center', anchor: 'center', font: { size: 8 }, formatter: (v) => v > 0 ? Math.round(v) : '' } },
+                { label: '응대율(%)', type: 'line', data: phoneRate, borderColor: '#ec4899', backgroundColor: '#ec4899', borderWidth: 2, yAxisID: 'y1', tension: 0.3, pointRadius: 3, pointHoverRadius: 5, datalabels: { display: true, align: 'top', offset: 8, color: '#ec4899', font: { size: 8, weight: 'bold' }, formatter: (val) => val.toFixed(1) + '%' } },
+                { label: '답변율(%)', type: 'line', data: boardRate, borderColor: '#8b5cf6', backgroundColor: '#8b5cf6', borderWidth: 2, yAxisID: 'y1', tension: 0.3, pointRadius: 3, pointHoverRadius: 5, datalabels: { display: true, align: 'top', offset: 8, color: '#8b5cf6', font: { size: 8, weight: 'bold' }, formatter: (val) => val.toFixed(1) + '%' } }
+            ]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', align: 'center', labels: { boxWidth: 10, padding: 20 } }, tooltip: { mode: 'index', intersect: false } },
+            scales: {
+                x: { stacked: true, grid: { display: false } },
+                y: { stacked: true, beginAtZero: true, max: 2000, ticks: { maxTicksLimit: 5 } },
+                y1: { display: false, position: 'right', min: 30, max: 120 }
+            }
+        }
+    });
+
+    // 팀 생산성
+    new Chart(document.getElementById('teamProdChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['10월2주', '10월3주', '10월4주', '11월1주', '11월2주', '평균'],
+            datasets: [
+                { label: 'CPD', data: [51, 48, 46, 47, 44, 47], backgroundColor: '#60a5fa', datalabels: { display: true, anchor: 'end', align: 'top', offset: -2 } },
+                { label: 'WPD', data: [97, 95, 93, 92, 99, 95], backgroundColor: '#93c5fd', datalabels: { display: true, anchor: 'end', align: 'top', offset: -2 } }
+            ]
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { 
+                legend: { 
+                    position: 'bottom', 
+                    align: 'center', 
+                    labels: { boxWidth: 10, padding: 20 } 
+                } 
+            }, 
+            scales: { 
+                y: { 
+                    beginAtZero: true, 
+                    max: 120,
+                    ticks: {
+                        stepSize: 20
+                    }
+                }, 
+                x: { 
+                    grid: { display: false } 
+                } 
+            } 
+        }
+    });
+
+    // 개인 생산성
+    new Chart(document.getElementById('personalProdChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['김지혜', '김계현', '장정숙', '심성현', '이슬기', '최재희', '장은정', '설은지', '박찬식', '이은화', '권미경', '한태구', '김중만'],
+            datasets: [
+                { 
+                    label: '전주', 
+                    data: [52, 48, 55, 58, 50, 46, 52, 49, 62, 58, 54, 60, 45], 
+                    backgroundColor: function(context) {
+                        const index = context.dataIndex;
+                        // 유선 담당자 (0-7): 파란색 계열
+                        if (index <= 7) return '#93c5fd';
+                        // 게시판 담당자 (8-12): 보라색 계열
+                        return '#c4b5fd';
+                    },
+                    datalabels: { display: true, anchor: 'end', align: 'top', font: {size: 9} } 
+                },
+                { 
+                    label: '금주', 
+                    data: [50, 46, 53, 56, 52, 44, 50, 47, 60, 56, 52, 58, 48], 
+                    backgroundColor: function(context) {
+                        const index = context.dataIndex;
+                        // 유선 담당자 (0-7): 진한 파란색
+                        if (index <= 7) return '#60a5fa';
+                        // 게시판 담당자 (8-12): 진한 보라색
+                        return '#a78bfa';
+                    },
+                    datalabels: { display: true, anchor: 'end', align: 'top', font: {size: 9} } 
+                }
+            ]
+        },
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { 
+                legend: { 
+                    position: 'bottom', 
+                    align: 'center', 
+                    labels: { boxWidth: 10, padding: 20 } 
+                },
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            const index = context[0].dataIndex;
+                            const name = context[0].label;
+                            const type = index <= 7 ? '유선' : '게시판';
+                            return name + ' (' + type + ')';
+                        }
+                    }
+                }
+            }, 
+            scales: { 
+                y: { beginAtZero: true, max: 100 }, 
+                x: { 
+                    grid: { display: false }, 
+                    ticks: { 
+                        font: { size: 10 },
+                        color: function(context) {
+                            const index = context.index;
+                            // 유선 담당자: 파란색
+                            if (index <= 7) return '#2563eb';
+                            // 게시판 담당자: 보라색
+                            return '#7c3aed';
+                        },
+                        callback: function(value, index) {
+                            const labels = this.getLabelForValue(index);
+                            return labels;
+                        }
+                    }
+                } 
+            } 
+        }
+    });
+
+    // 증가한 카테고리
+    new Chart(document.getElementById('increasedCatChart').getContext('2d'), {
+        type: 'bar',
+        indexAxis: 'y',
+        data: {
+            labels: ['웹호스팅>기타', '도메인>취소/환불', '웹호스팅>접속오류', '도메인>DNS관리', 'WP>설정/관리'],
+            datasets: [{
+                label: '증가율',
+                data: [81.6, 47.1, 12.3, 12.8, 12.5],
+                backgroundColor: '#f87171',
+                borderRadius: 4,
+                datalabels: { align: 'end', anchor: 'end', formatter: (val) => val + '%', color: '#dc2626', font: { weight: 'bold', size: 11 } }
+            }]
+        },
+        options: {
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { 
+                legend: { display: false },
+                datalabels: {
+                    display: true
+                }
+            }, 
+            scales: { 
+                x: { display: false, max: 100 }, 
+                y: { 
+                    grid: { display: false }, 
+                    ticks: { font: { size: 10 } } 
+                } 
+            }
+        }
+    });
+
+    // 감소한 카테고리
+    new Chart(document.getElementById('decreasedCatChart').getContext('2d'), {
+        type: 'bar',
+        indexAxis: 'y',
+        data: {
+            labels: ['웹메일>설정/관리', '웹호스팅>신규/연장', '보안인증서>신규/연장', '웹호스팅>취소/환불', '웹호스팅>설정/관리'],
+            datasets: [{
+                label: '감소율',
+                data: [-20.5, -14.1, -16.4, -18.3, -13.1],
+                backgroundColor: '#60a5fa',
+                borderRadius: 4,
+                datalabels: { align: 'start', anchor: 'start', formatter: (val) => val + '%', color: '#2563eb', font: { weight: 'bold', size: 11 } }
+            }]
+        },
+        options: {
+            responsive: true, 
+            maintainAspectRatio: false, 
+            plugins: { 
+                legend: { display: false },
+                datalabels: {
+                    display: true
+                }
+            }, 
+            scales: { 
+                x: { display: false, min: -25 }, 
+                y: { 
+                    grid: { display: false }, 
+                    position: 'right', 
+                    ticks: { font: { size: 10 } } 
+                } 
+            }
+        }
+    });
+
+    // 라이브+연장 사용자 추이
+    new Chart(document.getElementById('liveExtendUserChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: ['24.1월', '24.2월', '24.3월', '24.4월', '24.5월', '24.6월', '24.7월', '24.8월', '24.9월', '24.10월', '24.11월', '24.12월', 
+                     '25.1월', '25.2월', '25.3월', '25.4월', '25.5월', '25.6월', '25.7월', '25.8월', '25.9월', '25.10월', '25.11월'],
+            datasets: [
+                {
+                    label: '라이브사용자',
+                    data: [245621, 245903, 247235, 248119, 248025, 248041, 246839, 245518, 244529, 244348, 244618, 244497,
+                           244318, 243867, 244251, 245094, 245285, 245477, 245392, 246079, 247047, 246826, 247895],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.3,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    borderWidth: 2,
+                    fill: true,
+                    datalabels: {
+                        display: true,
+                        align: 'top',
+                        offset: 4,
+                        color: '#3b82f6',
+                        font: { size: 8, weight: 'bold' },
+                        formatter: (value) => (value / 1000).toFixed(0) + 'k'
+                    }
+                },
+                {
+                    label: '연장사용자',
+                    data: [239922, 241219, 241345, 242917, 243625, 243308, 241350, 240872, 240232, 239631, 240088, 240270,
+                           239490, 238809, 238137, 238888, 240189, 240165, 239993, 240722, 241521, 242356, 242467],
+                    borderColor: '#9ca3af',
+                    backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                    tension: 0.3,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    fill: false,
+                    datalabels: {
+                        display: true,
+                        align: 'bottom',
+                        offset: 4,
+                        color: '#6b7280',
+                        font: { size: 8 },
+                        formatter: (value) => (value / 1000).toFixed(0) + 'k'
+                    }
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    align: 'center',
+                    labels: { boxWidth: 12, padding: 15, font: { size: 11 } }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + '명';
+                        }
+                    }
+                },
+                datalabels: {
+                    display: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min: 235000,
+                    max: 250000,
+                    ticks: {
+                        callback: function(value) {
+                            return (value / 1000).toFixed(0) + 'k';
+                        },
+                        font: { size: 10 }
+                    },
+                    grid: { color: '#f3f4f6' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { 
+                        font: { size: 9 },
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            }
+        }
+    });
+
+    // 신규사용자+이탈자 추이
+    new Chart(document.getElementById('newChurnUserChart').getContext('2d'), {
+        type: 'line',
+        data: {
+            labels: ['24.1월', '24.2월', '24.3월', '24.4월', '24.5월', '24.6월', '24.7월', '24.8월', '24.9월', '24.10월', '24.11월', '24.12월', 
+                     '25.1월', '25.2월', '25.3월', '25.4월', '25.5월', '25.6월', '25.7월', '25.8월', '25.9월', '25.10월', '25.11월'],
+            datasets: [
+                {
+                    label: '신규사용자',
+                    data: [5813, 5000, 6113, 5284, 4814, 4607, 5504, 4635, 4297, 4916, 4618, 4370,
+                           4493, 5271, 6114, 6436, 5284, 5312, 5565, 5475, 5652, 4683, 5428],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    tension: 0.3,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    borderWidth: 2,
+                    fill: true,
+                    datalabels: {
+                        display: true,
+                        align: 'top',
+                        offset: 4,
+                        color: '#ef4444',
+                        font: { size: 8, weight: 'bold' },
+                        formatter: (value) => (value / 1000).toFixed(1) + 'k'
+                    }
+                },
+                {
+                    label: '이탈자',
+                    data: [4959, 4516, 4874, 4541, 4576, 5131, 6565, 5982, 5275, 4898, 4459, 4436,
+                           5150, 5174, 5943, 5363, 5135, 5308, 5484, 4836, 4676, 4817, 4575],
+                    borderColor: '#9ca3af',
+                    backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                    tension: 0.3,
+                    pointRadius: 3,
+                    pointHoverRadius: 5,
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    fill: false,
+                    datalabels: {
+                        display: true,
+                        align: 'bottom',
+                        offset: 4,
+                        color: '#6b7280',
+                        font: { size: 8 },
+                        formatter: (value) => (value / 1000).toFixed(1) + 'k'
+                    }
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    align: 'center',
+                    labels: { boxWidth: 12, padding: 15, font: { size: 11 } }
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y.toLocaleString() + '명';
+                        }
+                    }
+                },
+                datalabels: {
+                    display: true
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    min: 4000,
+                    max: 7000,
+                    ticks: {
+                        callback: function(value) {
+                            return (value / 1000).toFixed(1) + 'k';
+                        },
+                        font: { size: 10 }
+                    },
+                    grid: { color: '#f3f4f6' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { 
+                        font: { size: 9 },
+                        maxRotation: 45,
+                        minRotation: 45
+                    }
+                }
+            },
+            interaction: {
+                mode: 'nearest',
+                axis: 'x',
+                intersect: false
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
