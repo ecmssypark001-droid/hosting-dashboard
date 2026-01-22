@@ -8,262 +8,557 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-        }
-        
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            color: #6B7280;
-            border-radius: 0.5rem;
-            transition: all 0.2s;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-        
-        .nav-item:hover {
-            background-color: #F3F4F6;
-            color: #111827;
-        }
-        
-        .nav-item.active {
-            background-color: #EFF6FF;
-            color: #2563EB;
-        }
-        
-        .nav-item i {
-            width: 1.25rem;
-            margin-right: 0.75rem;
-        }
-        
-        .badge-count {
-            background-color: #EF4444;
-            color: white;
-            font-size: 0.75rem;
-            padding: 0.125rem 0.5rem;
-            border-radius: 9999px;
-            font-weight: 600;
-        }
-        
-        .nav-submenu {
-            margin-left: 2rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-        
-        .nav-submenu.active {
-            display: block;
-        }
-        
-        .nav-submenu-item {
-            padding: 0.5rem 1rem;
-            color: #6B7280;
-            font-size: 0.813rem;
-            border-radius: 0.375rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .nav-submenu-item:hover {
-            background-color: #F9FAFB;
-            color: #111827;
-        }
-        
-        .stat-card-modern {
-            background: white;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            transition: all 0.2s;
-        }
-        
-        .stat-card-modern:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        
-        .stat-icon-modern {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .stat-card-large {
-            background: white;
-            border: 1px solid #E5E7EB;
-            border-radius: 1rem;
-            padding: 2rem;
-        }
-        
-        .stat-icon-large {
-            width: 3rem;
-            height: 3rem;
-            border-radius: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .filter-btn-small {
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid #E5E7EB;
-            background: white;
-            color: #6B7280;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .filter-btn-small:hover {
-            background-color: #F9FAFB;
-        }
-        
-        .filter-btn-small.active {
-            background-color: #2563EB;
-            color: white;
-            border-color: #2563EB;
-        }
-        
-        .btn-primary {
-            padding: 0.625rem 1.25rem;
-            background-color: #2563EB;
-            color: white;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-        }
-        
-        .btn-primary:hover {
-            background-color: #1D4ED8;
-        }
-        
-        .task-card {
-            background: white;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        
-        .task-card:hover {
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border-color: #2563EB;
-        }
-        
-        .status-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-block;
-        }
-        
-        .status-todo { background-color: #F3E8FF; color: #7C3AED; }
-        .status-in-progress { background-color: #FEF3C7; color: #D97706; }
-        .status-done { background-color: #D1FAE5; color: #059669; }
-        .status-delayed { background-color: #FEE2E2; color: #DC2626; }
-        
-        .member-card {
-            background: white;
-            border: 1px solid #E5E7EB;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-        }
-        
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            padding: 0.625rem 0.875rem;
-            border: 1px solid #D1D5DB;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-        }
-        
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            outline: none;
-            border-color: #2563EB;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-        }
-        
-        .form-textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        
-        .btn-secondary {
-            padding: 0.625rem 1.25rem;
-            background-color: #F3F4F6;
-            color: #374151;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            font-size: 0.875rem;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #E5E7EB;
-        }
-        
-        .hidden { display: none !important; }
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Sidebar Navigation */
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.5rem;
+    color: #6b7280;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.nav-item i {
+    width: 20px;
+    margin-right: 0.75rem;
+    font-size: 1rem;
+}
+
+.nav-item:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.nav-item.active {
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.badge-count {
+    background: #e5e7eb;
+    color: #6b7280;
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+.nav-item.active .badge-count {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+/* Stats Cards Modern */
+.stat-card-modern {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.2s ease;
+}
+
+.stat-card-modern:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-icon-modern {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+/* Filter Buttons Small */
+.filter-btn-small {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    background: #f9fafb;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.filter-btn-small:hover {
+    background: #f3f4f6;
+}
+
+.filter-btn-small.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* Task Item Modern */
+.task-item-modern {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: #fafafa;
+    border-radius: 10px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+}
+
+.task-item-modern:hover {
+    background: #f3f4f6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.task-item-modern.priority-high {
+    border-left-color: #ef4444;
+}
+
+.task-item-modern.priority-medium {
+    border-left-color: #f59e0b;
+}
+
+.task-item-modern.priority-low {
+    border-left-color: #10b981;
+}
+
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d5db;
+    border-radius: 6px;
+    margin-right: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.task-checkbox.checked {
+    background: #10b981;
+    border-color: #10b981;
+    position: relative;
+}
+
+.task-checkbox.checked::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.task-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.task-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.task-priority-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.task-priority-badge.high {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.task-priority-badge.medium {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.task-priority-badge.low {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+/* Team Member Card Modern */
+.team-card-modern {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.2s ease;
+}
+
+.team-card-modern:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.team-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.team-card-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    margin-right: 12px;
+}
+
+.team-card-info h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 2px;
+}
+
+.team-card-info p {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.team-card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.team-stat-item {
+    text-align: center;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.team-stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.team-stat-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.team-card-progress {
+    margin-top: 16px;
+}
+
+.team-card-progress-label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.team-card-progress-bar {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.team-card-progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    transition: width 0.3s ease;
+}
+
+/* Status Badge */
+.status-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.status-todo { background-color: #F3E8FF; color: #7C3AED; }
+.status-시작전 { background-color: #F3E8FF; color: #7C3AED; }
+.status-in-progress { background-color: #FEF3C7; color: #D97706; }
+.status-진행중 { background-color: #FEF3C7; color: #D97706; }
+.status-진행 { background-color: #FEF3C7; color: #D97706; }
+.status-done { background-color: #D1FAE5; color: #059669; }
+.status-완료 { background-color: #D1FAE5; color: #059669; }
+.status-완료됨 { background-color: #D1FAE5; color: #059669; }
+.status-보류 { background-color: #FEE2E2; color: #DC2626; }
+
+/* Buttons */
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.btn-secondary {
+    padding: 0.625rem 1.25rem;
+    background-color: #F3F4F6;
+    color: #374151;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #E5E7EB;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    max-width: 48rem;
+    width: 100%;
+    margin: 1rem;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.modal-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+/* Form Elements */
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #111827;
+    transition: all 0.15s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    ring: 3px;
+    ring-color: rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* Notification */
+.notification {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+    min-width: 320px;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #sidebar {
+        transform: translateX(-100%);
+    }
+
+    main {
+        margin-left: 0;
+    }
+}
+
+/* Hide scrollbar but keep functionality */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Automation & Template Cards */
+.automation-card, .template-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.automation-card:hover, .template-card:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card-large {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+.stat-icon-large {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Sidebar -->
+<body class="bg-gray-50 font-inter">
     <aside id="sidebar" class="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 z-50">
-        <!-- Logo / Header -->
         <div class="h-16 flex items-center px-6 border-b border-gray-200">
             <div class="flex items-center space-x-3">
                 <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -275,36 +570,21 @@
                 </div>
             </div>
         </div>
-
-        <!-- User Profile -->
         <div class="px-4 py-4 border-b border-gray-200">
             <div class="flex items-center space-x-3 px-2">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                    박
-                </div>
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">박</div>
                 <div class="flex-1">
                     <p class="font-semibold text-sm text-gray-900">박슬예</p>
                     <p class="text-xs text-gray-500">팀장</p>
                 </div>
-                <button class="text-gray-400 hover:text-gray-600">
-                    <i class="fas fa-cog"></i>
-                </button>
             </div>
         </div>
-
-        <!-- Navigation -->
         <nav class="p-4 space-y-1">
-            <div>
-                <a href="#" class="nav-item active" data-tab="work" onclick="switchTab('work')">
-                    <i class="fas fa-clipboard-list"></i>
-                    <span>업무 현황</span>
-                    <span class="ml-auto badge-count" id="nav-work-count">0</span>
-                </a>
-                <!-- Team Members Submenu -->
-                <div class="nav-submenu active" id="work-submenu">
-                    <!-- Team member items will be loaded here -->
-                </div>
-            </div>
+            <a href="#" class="nav-item active" data-tab="work" onclick="switchTab('work')">
+                <i class="fas fa-clipboard-list"></i>
+                <span>업무 현황</span>
+                <span class="ml-auto badge-count" id="nav-work-count">0</span>
+            </a>
             <a href="#" class="nav-item" data-tab="automation" onclick="switchTab('automation')">
                 <i class="fas fa-robot"></i>
                 <span>자동화 관리</span>
@@ -314,118 +594,79 @@
                 <span>템플릿</span>
             </a>
         </nav>
-
-        <!-- Team Section (Bottom) -->
         <div class="absolute bottom-0 left-0 right-0 px-4 py-4 border-t border-gray-200 bg-white">
             <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3 px-2">팀 정보</p>
             <div class="text-xs text-gray-600 px-2 space-y-1">
-                <p>총 <span class="font-semibold text-gray-900" id="sidebar-team-count">0</span>명</p>
+                <p>총 <span class="font-semibold text-gray-900" id="sidebar-team-count">5</span>명</p>
                 <p>진행중 <span class="font-semibold text-blue-600" id="sidebar-active-count">0</span>건</p>
             </div>
         </div>
     </aside>
-
-    <!-- Main Content Area -->
     <main class="ml-64 min-h-screen">
-        <!-- Top Bar -->
         <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
+            <h2 class="text-xl font-bold text-gray-900" id="page-title">업무 현황</h2>
             <div class="flex items-center space-x-4">
-                <h2 class="text-xl font-bold text-gray-900" id="page-title">업무 현황</h2>
-            </div>
-            <div class="flex items-center space-x-4">
-                <div class="text-sm text-gray-600" id="header-date"></div>
-                <button class="w-10 h-10 rounded-lg hover:bg-gray-100 flex items-center justify-center text-gray-600">
-                    <i class="fas fa-bell"></i>
+                <button onclick="loadData()" class="text-sm text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-sync-alt mr-2"></i>새로고침
                 </button>
+                <div class="text-sm text-gray-600" id="header-date"></div>
             </div>
         </header>
 
-        <!-- Work Tab Content -->
-        <div id="work-tab" class="tab-content p-8">
-            <!-- Top Stats Cards (5 Cards) -->
+        <!-- 업무 현황 탭 -->
+        <div id="work-tab" class="tab-content active p-8">
             <div class="grid grid-cols-5 gap-6 mb-8">
-                <!-- Total Tasks -->
                 <div class="stat-card-modern">
                     <div class="flex items-center justify-between mb-3">
-                        <div class="stat-icon-modern bg-blue-100">
-                            <i class="fas fa-list text-blue-600"></i>
-                        </div>
+                        <div class="stat-icon-modern bg-blue-100"><i class="fas fa-list text-blue-600"></i></div>
                     </div>
                     <div>
                         <p class="text-2xl font-bold text-gray-900" id="total-tasks-count">0</p>
                         <p class="text-sm text-gray-600 mb-2">총 업무</p>
-                        <div class="flex items-center text-sm">
-                            <span class="text-blue-600 font-semibold" id="total-tasks-percent">100%</span>
-                        </div>
+                        <span class="text-blue-600 font-semibold text-sm">100%</span>
                     </div>
                 </div>
-
-                <!-- In Progress -->
                 <div class="stat-card-modern">
                     <div class="flex items-center justify-between mb-3">
-                        <div class="stat-icon-modern bg-yellow-100">
-                            <i class="fas fa-spinner text-yellow-600"></i>
-                        </div>
+                        <div class="stat-icon-modern bg-yellow-100"><i class="fas fa-spinner text-yellow-600"></i></div>
                     </div>
                     <div>
                         <p class="text-2xl font-bold text-gray-900" id="in-progress-count">0</p>
                         <p class="text-sm text-gray-600 mb-2">진행중</p>
-                        <div class="flex items-center text-sm">
-                            <span class="text-yellow-600 font-semibold" id="in-progress-percent">0%</span>
-                        </div>
+                        <span class="text-yellow-600 font-semibold text-sm" id="in-progress-percent">0%</span>
                     </div>
                 </div>
-
-                <!-- Delayed -->
                 <div class="stat-card-modern">
                     <div class="flex items-center justify-between mb-3">
-                        <div class="stat-icon-modern bg-red-100">
-                            <i class="fas fa-exclamation-circle text-red-600"></i>
-                        </div>
+                        <div class="stat-icon-modern bg-red-100"><i class="fas fa-exclamation-circle text-red-600"></i></div>
                     </div>
                     <div>
                         <p class="text-2xl font-bold text-gray-900" id="delayed-count">0</p>
                         <p class="text-sm text-gray-600 mb-2">지연중</p>
-                        <div class="flex items-center text-sm">
-                            <span class="text-red-600 font-semibold" id="delayed-percent">0%</span>
-                        </div>
+                        <span class="text-red-600 font-semibold text-sm" id="delayed-percent">0%</span>
                     </div>
                 </div>
-
-                <!-- Todo -->
                 <div class="stat-card-modern">
                     <div class="flex items-center justify-between mb-3">
-                        <div class="stat-icon-modern bg-purple-100">
-                            <i class="fas fa-clock text-purple-600"></i>
-                        </div>
+                        <div class="stat-icon-modern bg-purple-100"><i class="fas fa-clock text-purple-600"></i></div>
                     </div>
                     <div>
                         <p class="text-2xl font-bold text-gray-900" id="todo-count">0</p>
                         <p class="text-sm text-gray-600 mb-2">예정</p>
-                        <div class="flex items-center text-sm">
-                            <span class="text-purple-600 font-semibold" id="todo-percent">0%</span>
-                        </div>
+                        <span class="text-purple-600 font-semibold text-sm" id="todo-percent">0%</span>
                     </div>
                 </div>
-
-                <!-- Completed -->
                 <div class="stat-card-modern">
                     <div class="flex items-center justify-between mb-3">
-                        <div class="stat-icon-modern bg-green-100">
-                            <i class="fas fa-check-circle text-green-600"></i>
-                        </div>
+                        <div class="stat-icon-modern bg-green-100"><i class="fas fa-check-circle text-green-600"></i></div>
                     </div>
                     <div>
                         <p class="text-2xl font-bold text-gray-900" id="completed-count">0</p>
                         <p class="text-sm text-gray-600 mb-2">완료</p>
-                        <div class="flex items-center text-sm">
-                            <span class="text-green-600 font-semibold" id="completed-percent">0%</span>
-                        </div>
+                        <span class="text-green-600 font-semibold text-sm" id="completed-percent">0%</span>
                     </div>
                 </div>
             </div>
-
-            <!-- My Tasks Section -->
             <div class="bg-white rounded-xl border border-gray-200 p-6 mb-8">
                 <div class="flex items-center justify-between mb-6">
                     <div>
@@ -439,14 +680,10 @@
                         <button onclick="filterWork('done')" class="filter-btn-small" data-filter="done"><i class="fas fa-circle text-green-500 mr-1"></i>Completed</button>
                     </div>
                 </div>
-                
-                <!-- Tasks List -->
                 <div class="space-y-3" id="my-tasks-list">
-                    <!-- Tasks will be loaded here -->
+                    <div class="text-center py-8 text-gray-500">데이터를 불러오는 중...</div>
                 </div>
             </div>
-
-            <!-- Team Member Work Status -->
             <div class="mb-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-bold text-gray-900">개인별 업무 현황</h3>
@@ -454,14 +691,12 @@
                         <i class="fas fa-plus mr-2"></i>새 업무 추가
                     </button>
                 </div>
-                <div class="grid grid-cols-3 gap-6" id="team-member-cards">
-                    <!-- Team member cards will be loaded here -->
-                </div>
+                <div class="grid grid-cols-3 gap-6" id="team-member-cards"></div>
             </div>
         </div>
 
-        <!-- Automation Tab Content -->
-        <div id="automation-tab" class="tab-content hidden p-8">
+        <!-- 자동화 관리 탭 -->
+        <div id="automation-tab" class="tab-content p-8">
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-1">업무 자동화 관리</h3>
@@ -471,8 +706,6 @@
                     <i class="fas fa-plus mr-2"></i>새 프로젝트
                 </button>
             </div>
-
-            <!-- Automation Stats -->
             <div class="grid grid-cols-4 gap-6 mb-8">
                 <div class="stat-card-large">
                     <div class="flex items-center justify-between mb-4">
@@ -511,12 +744,11 @@
                     <p class="text-sm text-gray-600">월 절감 시간</p>
                 </div>
             </div>
-
             <div id="automation-list" class="space-y-4"></div>
         </div>
 
-        <!-- Templates Tab Content -->
-        <div id="templates-tab" class="tab-content hidden p-8">
+        <!-- 템플릿 탭 -->
+        <div id="templates-tab" class="tab-content p-8">
             <div class="flex justify-between items-center mb-8">
                 <div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-1">프롬프트 템플릿</h3>
@@ -534,957 +766,911 @@
     <div id="modals-container"></div>
 
     <script>
-        // Data Management
-        const DATA_KEYS = {
-            MEMBERS: 'hosting_team_members',
-            TASKS: 'hosting_team_tasks',
-            AUTOMATIONS: 'hosting_team_automations',
-            TEMPLATES: 'hosting_team_templates'
-        };
+// Google Apps Script Web App URL
+const WEBAPP_URL = 'https://script.google.com/a/macros/in.cd24.kr/s/AKfycbxbPSgazlvcl3YfzBwN2_h4um7evQggGZIMNZyf9gJ64c6S8IgVrH7Edj_oTn6f5isN/exec';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1TmLfBe2SCTRfbzbBRnN3F8x1NDN82BABuAr01U97Boc/edit';
 
-        // Initialize data structure
-        function initializeData() {
-            if (!localStorage.getItem(DATA_KEYS.MEMBERS)) {
-                const defaultMembers = [
-                    { id: 1, name: '정혜인', role: '파트장', avatar: '정' },
-                    { id: 2, name: '이엄지', role: '파트장', avatar: '이' },
-                    { id: 3, name: '김수인', role: '선임', avatar: '김' },
-                    { id: 4, name: '김태훈', role: '파트장', avatar: '김' },
-                    { id: 5, name: '박슬예', role: '팀장', avatar: '박' }
-                ];
-                localStorage.setItem(DATA_KEYS.MEMBERS, JSON.stringify(defaultMembers));
-            }
-            
-            if (!localStorage.getItem(DATA_KEYS.TASKS)) {
-                localStorage.setItem(DATA_KEYS.TASKS, JSON.stringify([]));
-            }
-            
-            if (!localStorage.getItem(DATA_KEYS.AUTOMATIONS)) {
-                localStorage.setItem(DATA_KEYS.AUTOMATIONS, JSON.stringify([]));
-            }
-            
-            if (!localStorage.getItem(DATA_KEYS.TEMPLATES)) {
-                localStorage.setItem(DATA_KEYS.TEMPLATES, JSON.stringify([]));
-            }
-        }
+const MEMBERS = [
+    { name: '박슬예', role: '팀장', avatar: '박', color: 'from-blue-500 to-blue-600' },
+    { name: '정혜인', role: '파트장', avatar: '정', color: 'from-purple-500 to-purple-600' },
+    { name: '김수인', role: '선임', avatar: '김', color: 'from-green-500 to-green-600' },
+    { name: '이엄지', role: '파트장', avatar: '이', color: 'from-orange-500 to-orange-600' },
+    { name: '김태훈', role: '파트장', avatar: '김', color: 'from-pink-500 to-pink-600' }
+];
 
-        // Data getters
-        function getMembers() {
-            return JSON.parse(localStorage.getItem(DATA_KEYS.MEMBERS)) || [];
-        }
+let allTasks = [];
+let allAutomations = [];
+let allTemplates = [];
+let currentFilter = 'all';
 
-        function getTasks() {
-            return JSON.parse(localStorage.getItem(DATA_KEYS.TASKS)) || [];
-        }
+document.addEventListener('DOMContentLoaded', () => {
+    updateHeaderDate();
+    loadData();
+});
 
-        function getAutomations() {
-            return JSON.parse(localStorage.getItem(DATA_KEYS.AUTOMATIONS)) || [];
-        }
+function updateHeaderDate() {
+    const now = new Date();
+    document.getElementById('header-date').textContent = now.toLocaleDateString('ko-KR', {
+        year: 'numeric', month: 'long', day: 'numeric', weekday: 'short'
+    });
+}
 
-        function getTemplates() {
-            return JSON.parse(localStorage.getItem(DATA_KEYS.TEMPLATES)) || [];
-        }
+async function loadData() {
+    try {
+        const response = await fetch(WEBAPP_URL);
+        const result = await response.json();
 
-        // Data setters
-        function saveTasks(tasks) {
-            localStorage.setItem(DATA_KEYS.TASKS, JSON.stringify(tasks));
-        }
+        if (result.success) {
+            allTasks = result.data.tasks || [];
+            allAutomations = result.data.automations || [];
+            allTemplates = result.data.templates || [];
 
-        function saveAutomations(automations) {
-            localStorage.setItem(DATA_KEYS.AUTOMATIONS, JSON.stringify(automations));
-        }
-
-        function saveTemplates(templates) {
-            localStorage.setItem(DATA_KEYS.TEMPLATES, JSON.stringify(templates));
-        }
-
-        // Tab switching
-        function switchTab(tabName) {
-            // Update nav items
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-            
-            // Update tab content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.add('hidden');
-            });
-            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
-            
-            // Update page title
-            const titles = {
-                work: '업무 현황',
-                automation: '자동화 관리',
-                templates: '템플릿 관리'
-            };
-            document.getElementById('page-title').textContent = titles[tabName];
-            
-            // Refresh data
-            if (tabName === 'work') renderWorkTab();
-            if (tabName === 'automation') renderAutomationTab();
-            if (tabName === 'templates') renderTemplatesTab();
-        }
-
-        // Work tab rendering
-        function renderWorkTab() {
-            const tasks = getTasks();
-            const members = getMembers();
-            
-            // Calculate stats
-            const stats = {
-                total: tasks.length,
-                inProgress: tasks.filter(t => t.status === 'in_progress').length,
-                delayed: tasks.filter(t => isDelayed(t)).length,
-                todo: tasks.filter(t => t.status === 'todo').length,
-                completed: tasks.filter(t => t.status === 'done').length
-            };
-            
-            // Update stat cards
-            document.getElementById('total-tasks-count').textContent = stats.total;
-            document.getElementById('in-progress-count').textContent = stats.inProgress;
-            document.getElementById('delayed-count').textContent = stats.delayed;
-            document.getElementById('todo-count').textContent = stats.todo;
-            document.getElementById('completed-count').textContent = stats.completed;
-            
-            // Update percentages
-            if (stats.total > 0) {
-                document.getElementById('in-progress-percent').textContent = 
-                    Math.round((stats.inProgress / stats.total) * 100) + '%';
-                document.getElementById('delayed-percent').textContent = 
-                    Math.round((stats.delayed / stats.total) * 100) + '%';
-                document.getElementById('todo-percent').textContent = 
-                    Math.round((stats.todo / stats.total) * 100) + '%';
-                document.getElementById('completed-percent').textContent = 
-                    Math.round((stats.completed / stats.total) * 100) + '%';
-            }
-            
-            // Render tasks list
-            renderTasksList(tasks);
-            
-            // Render team member cards
-            renderTeamMemberCards(members, tasks);
-            
-            // Render submenu
-            renderWorkSubmenu(members, tasks);
-            
-            // Update sidebar stats
-            document.getElementById('sidebar-team-count').textContent = members.length;
-            document.getElementById('sidebar-active-count').textContent = stats.inProgress;
-            document.getElementById('nav-work-count').textContent = stats.total;
-        }
-
-        function renderTasksList(tasks) {
-            const container = document.getElementById('my-tasks-list');
-            
-            if (tasks.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fas fa-inbox text-4xl mb-4"></i>
-                        <p>등록된 업무가 없습니다</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Sort by deadline
-            const sortedTasks = [...tasks].sort((a, b) => {
-                if (!a.deadline) return 1;
-                if (!b.deadline) return -1;
-                return new Date(a.deadline) - new Date(b.deadline);
-            });
-            
-            container.innerHTML = sortedTasks.map(task => {
-                const member = getMembers().find(m => m.id === task.assigneeId);
-                const statusClass = `status-${task.status.replace('_', '-')}`;
-                const statusText = {
-                    'todo': '예정',
-                    'in_progress': '진행중',
-                    'done': '완료'
-                }[task.status];
-                
-                const isLate = isDelayed(task);
-                
-                return `
-                    <div class="task-card" onclick="editTask(${task.id})">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <span class="status-badge ${statusClass}">${statusText}</span>
-                                    ${isLate ? '<span class="status-badge status-delayed">지연</span>' : ''}
-                                </div>
-                                <h4 class="font-semibold text-gray-900 mb-1">${task.title}</h4>
-                                <p class="text-sm text-gray-600 mb-3">${task.description || ''}</p>
-                                <div class="flex items-center space-x-4 text-xs text-gray-500">
-                                    <span><i class="fas fa-user mr-1"></i>${member ? member.name : '미배정'}</span>
-                                    ${task.deadline ? `<span><i class="fas fa-calendar mr-1"></i>${formatDate(task.deadline)}</span>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderTeamMemberCards(members, tasks) {
-            const container = document.getElementById('team-member-cards');
-            
-            container.innerHTML = members.map(member => {
-                const memberTasks = tasks.filter(t => t.assigneeId === member.id);
-                const activeTasks = memberTasks.filter(t => t.status !== 'done');
-                const completedTasks = memberTasks.filter(t => t.status === 'done');
-                
-                return `
-                    <div class="member-card">
-                        <div class="flex items-center space-x-3 mb-4">
-                            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                                ${member.avatar}
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-gray-900">${member.name}</h4>
-                                <p class="text-sm text-gray-500">${member.role}</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">진행중</span>
-                                <span class="font-semibold text-blue-600">${activeTasks.length}건</span>
-                            </div>
-                            <div class="flex justify-between text-sm">
-                                <span class="text-gray-600">완료</span>
-                                <span class="font-semibold text-green-600">${completedTasks.length}건</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function renderWorkSubmenu(members, tasks) {
-            const container = document.getElementById('work-submenu');
-            
-            container.innerHTML = members.map(member => {
-                const memberTasks = tasks.filter(t => t.assigneeId === member.id && t.status !== 'done');
-                
-                return `
-                    <div class="nav-submenu-item">
-                        <span>${member.name}</span>
-                        <span class="text-xs text-gray-400">${memberTasks.length}</span>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Filter work
-        let currentFilter = 'all';
-        function filterWork(filter) {
-            currentFilter = filter;
-            
-            // Update button states
-            document.querySelectorAll('.filter-btn-small').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-            
-            // Filter tasks
-            const allTasks = getTasks();
-            let filteredTasks = allTasks;
-            
-            if (filter === 'todo') {
-                filteredTasks = allTasks.filter(t => t.status === 'todo');
-            } else if (filter === 'in_progress') {
-                filteredTasks = allTasks.filter(t => t.status === 'in_progress');
-            } else if (filter === 'done') {
-                filteredTasks = allTasks.filter(t => t.status === 'done');
-            }
-            
-            renderTasksList(filteredTasks);
-        }
-
-        // Task management
-        function openAddWorkModal() {
-            const members = getMembers();
-            
-            const modal = `
-                <div class="modal-overlay" id="add-work-modal" onclick="closeModalOnBackdrop(event)">
-                    <div class="modal-content">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-gray-900">새 업무 추가</h3>
-                            <button onclick="closeModal('add-work-modal')" class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-                        
-                        <form onsubmit="saveNewTask(event)">
-                            <div class="form-group">
-                                <label class="form-label">업무 제목 *</label>
-                                <input type="text" class="form-input" id="task-title" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">업무 설명</label>
-                                <textarea class="form-textarea" id="task-description"></textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">담당자 *</label>
-                                <select class="form-select" id="task-assignee" required>
-                                    <option value="">담당자 선택</option>
-                                    ${members.map(m => `<option value="${m.id}">${m.name} (${m.role})</option>`).join('')}
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">상태 *</label>
-                                <select class="form-select" id="task-status" required>
-                                    <option value="todo">예정</option>
-                                    <option value="in_progress">진행중</option>
-                                    <option value="done">완료</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">마감일</label>
-                                <input type="date" class="form-input" id="task-deadline">
-                            </div>
-                            
-                            <div class="flex justify-end space-x-3 mt-6">
-                                <button type="button" onclick="closeModal('add-work-modal')" class="btn-secondary">
-                                    취소
-                                </button>
-                                <button type="submit" class="btn-primary">
-                                    저장
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('modals-container').innerHTML = modal;
-        }
-
-        function saveNewTask(event) {
-            event.preventDefault();
-            
-            const tasks = getTasks();
-            const newTask = {
-                id: Date.now(),
-                title: document.getElementById('task-title').value,
-                description: document.getElementById('task-description').value,
-                assigneeId: parseInt(document.getElementById('task-assignee').value),
-                status: document.getElementById('task-status').value,
-                deadline: document.getElementById('task-deadline').value || null,
-                createdAt: new Date().toISOString()
-            };
-            
-            tasks.push(newTask);
-            saveTasks(tasks);
-            
-            closeModal('add-work-modal');
             renderWorkTab();
-        }
-
-        function editTask(taskId) {
-            const tasks = getTasks();
-            const task = tasks.find(t => t.id === taskId);
-            if (!task) return;
-            
-            const members = getMembers();
-            
-            const modal = `
-                <div class="modal-overlay" id="edit-work-modal" onclick="closeModalOnBackdrop(event)">
-                    <div class="modal-content">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-gray-900">업무 수정</h3>
-                            <button onclick="closeModal('edit-work-modal')" class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-                        
-                        <form onsubmit="updateTask(event, ${taskId})">
-                            <div class="form-group">
-                                <label class="form-label">업무 제목 *</label>
-                                <input type="text" class="form-input" id="edit-task-title" value="${task.title}" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">업무 설명</label>
-                                <textarea class="form-textarea" id="edit-task-description">${task.description || ''}</textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">담당자 *</label>
-                                <select class="form-select" id="edit-task-assignee" required>
-                                    ${members.map(m => `
-                                        <option value="${m.id}" ${m.id === task.assigneeId ? 'selected' : ''}>
-                                            ${m.name} (${m.role})
-                                        </option>
-                                    `).join('')}
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">상태 *</label>
-                                <select class="form-select" id="edit-task-status" required>
-                                    <option value="todo" ${task.status === 'todo' ? 'selected' : ''}>예정</option>
-                                    <option value="in_progress" ${task.status === 'in_progress' ? 'selected' : ''}>진행중</option>
-                                    <option value="done" ${task.status === 'done' ? 'selected' : ''}>완료</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">마감일</label>
-                                <input type="date" class="form-input" id="edit-task-deadline" value="${task.deadline || ''}">
-                            </div>
-                            
-                            <div class="flex justify-between mt-6">
-                                <button type="button" onclick="deleteTask(${taskId})" class="btn-secondary text-red-600">
-                                    <i class="fas fa-trash mr-2"></i>삭제
-                                </button>
-                                <div class="flex space-x-3">
-                                    <button type="button" onclick="closeModal('edit-work-modal')" class="btn-secondary">
-                                        취소
-                                    </button>
-                                    <button type="submit" class="btn-primary">
-                                        저장
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('modals-container').innerHTML = modal;
-        }
-
-        function updateTask(event, taskId) {
-            event.preventDefault();
-            
-            const tasks = getTasks();
-            const taskIndex = tasks.findIndex(t => t.id === taskId);
-            
-            if (taskIndex !== -1) {
-                tasks[taskIndex] = {
-                    ...tasks[taskIndex],
-                    title: document.getElementById('edit-task-title').value,
-                    description: document.getElementById('edit-task-description').value,
-                    assigneeId: parseInt(document.getElementById('edit-task-assignee').value),
-                    status: document.getElementById('edit-task-status').value,
-                    deadline: document.getElementById('edit-task-deadline').value || null,
-                    updatedAt: new Date().toISOString()
-                };
-                
-                saveTasks(tasks);
-            }
-            
-            closeModal('edit-work-modal');
-            renderWorkTab();
-        }
-
-        function deleteTask(taskId) {
-            if (!confirm('이 업무를 삭제하시겠습니까?')) return;
-            
-            const tasks = getTasks();
-            const filteredTasks = tasks.filter(t => t.id !== taskId);
-            saveTasks(filteredTasks);
-            
-            closeModal('edit-work-modal');
-            renderWorkTab();
-        }
-
-        // Automation tab
-        function renderAutomationTab() {
-            const automations = getAutomations();
-            
-            // Calculate stats
-            const completed = automations.filter(a => a.status === 'completed').length;
-            const inProgress = automations.filter(a => a.status === 'in_progress').length;
-            const avgEfficiency = automations.length > 0 
-                ? Math.round(automations.reduce((sum, a) => sum + (a.efficiency || 0), 0) / automations.length)
-                : 0;
-            const totalTimeSaved = automations.reduce((sum, a) => sum + (a.timeSaved || 0), 0);
-            
-            document.getElementById('auto-complete-count').textContent = completed;
-            document.getElementById('auto-progress-count').textContent = inProgress;
-            document.getElementById('auto-efficiency').textContent = avgEfficiency;
-            document.getElementById('auto-time-saved').textContent = totalTimeSaved;
-            
-            // Render list
-            const container = document.getElementById('automation-list');
-            
-            if (automations.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-12 text-gray-500 bg-white rounded-xl border border-gray-200">
-                        <i class="fas fa-robot text-4xl mb-4"></i>
-                        <p>등록된 자동화 프로젝트가 없습니다</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = automations.map(auto => {
-                const statusClass = auto.status === 'completed' ? 'status-done' : 'status-in-progress';
-                const statusText = auto.status === 'completed' ? '완료' : '진행중';
-                
-                return `
-                    <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-all cursor-pointer" onclick="editAutomation(${auto.id})">
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex-1">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <span class="status-badge ${statusClass}">${statusText}</span>
-                                </div>
-                                <h4 class="font-semibold text-lg text-gray-900 mb-2">${auto.title}</h4>
-                                <p class="text-sm text-gray-600">${auto.description || ''}</p>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
-                            <div>
-                                <p class="text-xs text-gray-500 mb-1">효율성</p>
-                                <p class="font-semibold text-purple-600">${auto.efficiency || 0}%</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500 mb-1">절감 시간</p>
-                                <p class="font-semibold text-orange-600">${auto.timeSaved || 0}h/월</p>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-500 mb-1">시작일</p>
-                                <p class="font-semibold text-gray-700">${formatDate(auto.startDate)}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function openAddAutomationModal() {
-            const modal = `
-                <div class="modal-overlay" id="add-automation-modal" onclick="closeModalOnBackdrop(event)">
-                    <div class="modal-content">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-gray-900">새 자동화 프로젝트</h3>
-                            <button onclick="closeModal('add-automation-modal')" class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-                        
-                        <form onsubmit="saveNewAutomation(event)">
-                            <div class="form-group">
-                                <label class="form-label">프로젝트 이름 *</label>
-                                <input type="text" class="form-input" id="auto-title" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">설명</label>
-                                <textarea class="form-textarea" id="auto-description"></textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">상태 *</label>
-                                <select class="form-select" id="auto-status" required>
-                                    <option value="in_progress">진행중</option>
-                                    <option value="completed">완료</option>
-                                </select>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="form-group">
-                                    <label class="form-label">효율성 (%)</label>
-                                    <input type="number" class="form-input" id="auto-efficiency" min="0" max="100" value="0">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">월 절감 시간 (h)</label>
-                                    <input type="number" class="form-input" id="auto-time-saved" min="0" value="0">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">시작일</label>
-                                <input type="date" class="form-input" id="auto-start-date">
-                            </div>
-                            
-                            <div class="flex justify-end space-x-3 mt-6">
-                                <button type="button" onclick="closeModal('add-automation-modal')" class="btn-secondary">
-                                    취소
-                                </button>
-                                <button type="submit" class="btn-primary">
-                                    저장
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('modals-container').innerHTML = modal;
-        }
-
-        function saveNewAutomation(event) {
-            event.preventDefault();
-            
-            const automations = getAutomations();
-            const newAuto = {
-                id: Date.now(),
-                title: document.getElementById('auto-title').value,
-                description: document.getElementById('auto-description').value,
-                status: document.getElementById('auto-status').value,
-                efficiency: parseInt(document.getElementById('auto-efficiency').value) || 0,
-                timeSaved: parseInt(document.getElementById('auto-time-saved').value) || 0,
-                startDate: document.getElementById('auto-start-date').value || new Date().toISOString().split('T')[0],
-                createdAt: new Date().toISOString()
-            };
-            
-            automations.push(newAuto);
-            saveAutomations(automations);
-            
-            closeModal('add-automation-modal');
             renderAutomationTab();
-        }
-
-        function editAutomation(autoId) {
-            const automations = getAutomations();
-            const auto = automations.find(a => a.id === autoId);
-            if (!auto) return;
-            
-            const modal = `
-                <div class="modal-overlay" id="edit-automation-modal" onclick="closeModalOnBackdrop(event)">
-                    <div class="modal-content">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-gray-900">자동화 프로젝트 수정</h3>
-                            <button onclick="closeModal('edit-automation-modal')" class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-                        
-                        <form onsubmit="updateAutomation(event, ${autoId})">
-                            <div class="form-group">
-                                <label class="form-label">프로젝트 이름 *</label>
-                                <input type="text" class="form-input" id="edit-auto-title" value="${auto.title}" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">설명</label>
-                                <textarea class="form-textarea" id="edit-auto-description">${auto.description || ''}</textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">상태 *</label>
-                                <select class="form-select" id="edit-auto-status" required>
-                                    <option value="in_progress" ${auto.status === 'in_progress' ? 'selected' : ''}>진행중</option>
-                                    <option value="completed" ${auto.status === 'completed' ? 'selected' : ''}>완료</option>
-                                </select>
-                            </div>
-                            
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="form-group">
-                                    <label class="form-label">효율성 (%)</label>
-                                    <input type="number" class="form-input" id="edit-auto-efficiency" min="0" max="100" value="${auto.efficiency || 0}">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="form-label">월 절감 시간 (h)</label>
-                                    <input type="number" class="form-input" id="edit-auto-time-saved" min="0" value="${auto.timeSaved || 0}">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">시작일</label>
-                                <input type="date" class="form-input" id="edit-auto-start-date" value="${auto.startDate || ''}">
-                            </div>
-                            
-                            <div class="flex justify-between mt-6">
-                                <button type="button" onclick="deleteAutomation(${autoId})" class="btn-secondary text-red-600">
-                                    <i class="fas fa-trash mr-2"></i>삭제
-                                </button>
-                                <div class="flex space-x-3">
-                                    <button type="button" onclick="closeModal('edit-automation-modal')" class="btn-secondary">
-                                        취소
-                                    </button>
-                                    <button type="submit" class="btn-primary">
-                                        저장
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('modals-container').innerHTML = modal;
-        }
-
-        function updateAutomation(event, autoId) {
-            event.preventDefault();
-            
-            const automations = getAutomations();
-            const autoIndex = automations.findIndex(a => a.id === autoId);
-            
-            if (autoIndex !== -1) {
-                automations[autoIndex] = {
-                    ...automations[autoIndex],
-                    title: document.getElementById('edit-auto-title').value,
-                    description: document.getElementById('edit-auto-description').value,
-                    status: document.getElementById('edit-auto-status').value,
-                    efficiency: parseInt(document.getElementById('edit-auto-efficiency').value) || 0,
-                    timeSaved: parseInt(document.getElementById('edit-auto-time-saved').value) || 0,
-                    startDate: document.getElementById('edit-auto-start-date').value,
-                    updatedAt: new Date().toISOString()
-                };
-                
-                saveAutomations(automations);
-            }
-            
-            closeModal('edit-automation-modal');
-            renderAutomationTab();
-        }
-
-        function deleteAutomation(autoId) {
-            if (!confirm('이 자동화 프로젝트를 삭제하시겠습니까?')) return;
-            
-            const automations = getAutomations();
-            const filtered = automations.filter(a => a.id !== autoId);
-            saveAutomations(filtered);
-            
-            closeModal('edit-automation-modal');
-            renderAutomationTab();
-        }
-
-        // Templates tab
-        function renderTemplatesTab() {
-            const templates = getTemplates();
-            const container = document.getElementById('templates-list');
-            
-            if (templates.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-3 text-center py-12 text-gray-500 bg-white rounded-xl border border-gray-200">
-                        <i class="fas fa-file-alt text-4xl mb-4"></i>
-                        <p>등록된 템플릿이 없습니다</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = templates.map(template => `
-                <div class="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-md transition-all cursor-pointer" onclick="editTemplate(${template.id})">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-file-alt text-blue-600"></i>
-                        </div>
-                    </div>
-                    <h4 class="font-semibold text-gray-900 mb-2">${template.title}</h4>
-                    <p class="text-sm text-gray-600 mb-4">${template.description || ''}</p>
-                    <div class="flex items-center justify-between text-xs text-gray-500">
-                        <span><i class="fas fa-tag mr-1"></i>${template.category || '일반'}</span>
-                        <span><i class="fas fa-clock mr-1"></i>${formatDate(template.createdAt)}</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openAddTemplateModal() {
-            const modal = `
-                <div class="modal-overlay" id="add-template-modal" onclick="closeModalOnBackdrop(event)">
-                    <div class="modal-content">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-gray-900">새 템플릿</h3>
-                            <button onclick="closeModal('add-template-modal')" class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-                        
-                        <form onsubmit="saveNewTemplate(event)">
-                            <div class="form-group">
-                                <label class="form-label">템플릿 이름 *</label>
-                                <input type="text" class="form-input" id="template-title" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">설명</label>
-                                <textarea class="form-textarea" id="template-description" rows="3"></textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">카테고리</label>
-                                <input type="text" class="form-input" id="template-category" placeholder="예: 보고서, 회의록, 분석">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">템플릿 내용 *</label>
-                                <textarea class="form-textarea" id="template-content" rows="10" required></textarea>
-                            </div>
-                            
-                            <div class="flex justify-end space-x-3 mt-6">
-                                <button type="button" onclick="closeModal('add-template-modal')" class="btn-secondary">
-                                    취소
-                                </button>
-                                <button type="submit" class="btn-primary">
-                                    저장
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('modals-container').innerHTML = modal;
-        }
-
-        function saveNewTemplate(event) {
-            event.preventDefault();
-            
-            const templates = getTemplates();
-            const newTemplate = {
-                id: Date.now(),
-                title: document.getElementById('template-title').value,
-                description: document.getElementById('template-description').value,
-                category: document.getElementById('template-category').value || '일반',
-                content: document.getElementById('template-content').value,
-                createdAt: new Date().toISOString()
-            };
-            
-            templates.push(newTemplate);
-            saveTemplates(templates);
-            
-            closeModal('add-template-modal');
             renderTemplatesTab();
-        }
 
-        function editTemplate(templateId) {
-            const templates = getTemplates();
-            const template = templates.find(t => t.id === templateId);
-            if (!template) return;
-            
-            const modal = `
-                <div class="modal-overlay" id="edit-template-modal" onclick="closeModalOnBackdrop(event)">
-                    <div class="modal-content">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-bold text-gray-900">템플릿 수정</h3>
-                            <button onclick="closeModal('edit-template-modal')" class="text-gray-400 hover:text-gray-600">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-                        
-                        <form onsubmit="updateTemplate(event, ${templateId})">
-                            <div class="form-group">
-                                <label class="form-label">템플릿 이름 *</label>
-                                <input type="text" class="form-input" id="edit-template-title" value="${template.title}" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">설명</label>
-                                <textarea class="form-textarea" id="edit-template-description" rows="3">${template.description || ''}</textarea>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">카테고리</label>
-                                <input type="text" class="form-input" id="edit-template-category" value="${template.category || ''}">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">템플릿 내용 *</label>
-                                <textarea class="form-textarea" id="edit-template-content" rows="10" required>${template.content}</textarea>
-                            </div>
-                            
-                            <div class="flex justify-between mt-6">
-                                <button type="button" onclick="deleteTemplate(${templateId})" class="btn-secondary text-red-600">
-                                    <i class="fas fa-trash mr-2"></i>삭제
-                                </button>
-                                <div class="flex space-x-3">
-                                    <button type="button" onclick="closeModal('edit-template-modal')" class="btn-secondary">
-                                        취소
-                                    </button>
-                                    <button type="submit" class="btn-primary">
-                                        저장
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+            showNotification('데이터를 불러왔습니다!', 'success');
+        } else {
+            showError('데이터 로딩 실패: ' + (result.error || '알 수 없는 오류'));
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+        showError('서버 연결 실패: ' + error.message);
+    }
+}
+
+function switchTab(tabName) {
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.getElementById(`${tabName}-tab`).classList.add('active');
+
+    const titles = {
+        work: '업무 현황',
+        automation: '자동화 관리',
+        templates: '템플릿 관리'
+    };
+    document.getElementById('page-title').textContent = titles[tabName];
+}
+
+// ===== 업무 현황 탭 =====
+function renderWorkTab() {
+    const total = allTasks.length;
+    const inProgress = allTasks.filter(t => ['진행중', '진행'].includes(t.상태)).length;
+    const delayed = allTasks.filter(t => t.상태 === '보류').length;
+    const todo = allTasks.filter(t => t.상태 === '시작전').length;
+    const completed = allTasks.filter(t => ['완료', '완료됨'].includes(t.상태)).length;
+
+    document.getElementById('total-tasks-count').textContent = total;
+    document.getElementById('in-progress-count').textContent = inProgress;
+    document.getElementById('delayed-count').textContent = delayed;
+    document.getElementById('todo-count').textContent = todo;
+    document.getElementById('completed-count').textContent = completed;
+
+    if (total > 0) {
+        document.getElementById('in-progress-percent').textContent = Math.round((inProgress / total) * 100) + '%';
+        document.getElementById('delayed-percent').textContent = Math.round((delayed / total) * 100) + '%';
+        document.getElementById('todo-percent').textContent = Math.round((todo / total) * 100) + '%';
+        document.getElementById('completed-percent').textContent = Math.round((completed / total) * 100) + '%';
+    }
+
+    document.getElementById('nav-work-count').textContent = total;
+    document.getElementById('sidebar-active-count').textContent = inProgress;
+
+    renderTasksList();
+    renderMemberCards();
+}
+
+function renderTasksList() {
+    const container = document.getElementById('my-tasks-list');
+    let filtered = allTasks;
+
+    if (currentFilter === 'in_progress') {
+        filtered = allTasks.filter(t => ['진행중', '진행'].includes(t.상태));
+    } else if (currentFilter === 'done') {
+        filtered = allTasks.filter(t => ['완료', '완료됨'].includes(t.상태));
+    } else if (currentFilter === 'todo') {
+        filtered = allTasks.filter(t => t.상태 === '시작전');
+    }
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="text-center py-12 text-gray-500">업무가 없습니다</div>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(task => {
+        const isDone = ['완료', '완료됨'].includes(task.상태);
+        const priorityClass = ['긴급', '높음', '높'].includes(task.긴급도) ? 'priority-high' :
+                             ['보통', '상'].includes(task.긴급도) ? 'priority-medium' : 'priority-low';
+
+        return `
+            <div class="task-item-modern ${priorityClass}" onclick="editTask('${task.id}')">
+                <div class="task-checkbox ${isDone ? 'checked' : ''}"></div>
+                <div class="task-content">
+                    <div class="task-title">${escapeHtml(task.내용 || task.title || '제목 없음')}</div>
+                    <div class="task-meta">
+                        ${task.담당자 ? `<span><i class="fas fa-user mr-1"></i>${escapeHtml(task.담당자)}</span>` : ''}
+                        ${task.마감일 ? `<span><i class="fas fa-calendar mr-1"></i>${formatDate(task.마감일)}</span>` : ''}
+                        ${task.구분 ? `<span class="px-2 py-1 bg-gray-100 rounded text-xs">${escapeHtml(task.구분)}</span>` : ''}
                     </div>
                 </div>
-            `;
-            
-            document.getElementById('modals-container').innerHTML = modal;
-        }
+            </div>
+        `;
+    }).join('');
+}
 
-        function updateTemplate(event, templateId) {
-            event.preventDefault();
-            
-            const templates = getTemplates();
-            const templateIndex = templates.findIndex(t => t.id === templateId);
-            
-            if (templateIndex !== -1) {
-                templates[templateIndex] = {
-                    ...templates[templateIndex],
-                    title: document.getElementById('edit-template-title').value,
-                    description: document.getElementById('edit-template-description').value,
-                    category: document.getElementById('edit-template-category').value,
-                    content: document.getElementById('edit-template-content').value,
-                    updatedAt: new Date().toISOString()
-                };
-                
-                saveTemplates(templates);
-            }
-            
-            closeModal('edit-template-modal');
-            renderTemplatesTab();
-        }
+function renderMemberCards() {
+    const container = document.getElementById('team-member-cards');
 
-        function deleteTemplate(templateId) {
-            if (!confirm('이 템플릿을 삭제하시겠습니까?')) return;
-            
-            const templates = getTemplates();
-            const filtered = templates.filter(t => t.id !== templateId);
-            saveTemplates(filtered);
-            
-            closeModal('edit-template-modal');
-            renderTemplatesTab();
-        }
+    container.innerHTML = MEMBERS.map(member => {
+        const memberTasks = allTasks.filter(t => t.담당자 && t.담당자.includes(member.name));
+        const activeTasks = memberTasks.filter(t => !['완료', '완료됨'].includes(t.상태));
+        const completedTasks = memberTasks.filter(t => ['완료', '완료됨'].includes(t.상태));
+        const completionRate = memberTasks.length > 0 ? Math.round((completedTasks.length / memberTasks.length) * 100) : 0;
 
-        // Modal utilities
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.remove();
-            }
-        }
+        return `
+            <div class="team-card-modern">
+                <div class="team-card-header">
+                    <div class="team-card-avatar bg-gradient-to-br ${member.color}">${member.avatar}</div>
+                    <div class="team-card-info">
+                        <h4>${escapeHtml(member.name)}</h4>
+                        <p>${escapeHtml(member.role)}</p>
+                    </div>
+                </div>
+                <div class="team-card-stats">
+                    <div class="team-stat-item">
+                        <div class="team-stat-value">${memberTasks.length}</div>
+                        <div class="team-stat-label">총 업무</div>
+                    </div>
+                    <div class="team-stat-item">
+                        <div class="team-stat-value">${activeTasks.length}</div>
+                        <div class="team-stat-label">진행중</div>
+                    </div>
+                </div>
+                <div class="team-card-progress">
+                    <div class="team-card-progress-label">
+                        <span>완료율</span>
+                        <span class="font-semibold">${completionRate}%</span>
+                    </div>
+                    <div class="team-card-progress-bar">
+                        <div class="team-card-progress-fill" style="width: ${completionRate}%"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
 
-        function closeModalOnBackdrop(event) {
-            if (event.target.classList.contains('modal-overlay')) {
-                event.target.remove();
-            }
-        }
+function filterWork(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.filter-btn-small').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+    renderTasksList();
+}
 
-        // Utility functions
-        function formatDate(dateString) {
-            if (!dateString) return '';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-        }
+function openAddWorkModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'add-work-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>새 업무 추가</h3>
+                <button onclick="closeModal('add-work-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveNewTask(event)">
+                    <div class="form-group">
+                        <label class="form-label">업무 제목 *</label>
+                        <input type="text" class="form-input" id="task-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">담당자 *</label>
+                        <select class="form-select" id="task-assignee" required>
+                            <option value="">담당자 선택</option>
+                            ${MEMBERS.map(m => `<option value="${m.name}">${m.name} (${m.role})</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">상태 *</label>
+                        <select class="form-select" id="task-status" required>
+                            <option value="시작전">예정</option>
+                            <option value="진행중">진행중</option>
+                            <option value="완료">완료</option>
+                            <option value="보류">보류</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">긴급도</label>
+                        <select class="form-select" id="task-priority">
+                            <option value="보통">보통</option>
+                            <option value="높음">높음</option>
+                            <option value="긴급">긴급</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">마감일</label>
+                        <input type="date" class="form-input" id="task-deadline">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">구분</label>
+                        <input type="text" class="form-input" id="task-category" placeholder="예: 서버관리, CS, 개발">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="closeModal('add-work-modal')" class="btn-secondary">취소</button>
+                        <button type="submit" class="btn-primary">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.getElementById('modals-container').appendChild(modal);
+}
 
-        function isDelayed(task) {
-            if (!task.deadline || task.status === 'done') return false;
-            return new Date(task.deadline) < new Date();
-        }
+async function saveNewTask(event) {
+    event.preventDefault();
 
-        function updateHeaderDate() {
-            const now = new Date();
-            const formatted = now.toLocaleDateString('ko-KR', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric',
-                weekday: 'long'
-            });
-            document.getElementById('header-date').textContent = formatted;
+    const newTask = {
+        action: 'create',
+        type: 'task',
+        data: {
+            내용: document.getElementById('task-title').value,
+            담당자: document.getElementById('task-assignee').value,
+            상태: document.getElementById('task-status').value,
+            긴급도: document.getElementById('task-priority').value,
+            마감일: document.getElementById('task-deadline').value,
+            구분: document.getElementById('task-category').value
         }
+    };
 
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeData();
-            updateHeaderDate();
-            renderWorkTab();
+    try {
+        const response = await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTask)
         });
+
+        closeModal('add-work-modal');
+        showNotification('업무가 추가되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('저장 실패: ' + error.message, 'error');
+    }
+}
+
+function editTask(taskId) {
+    const task = allTasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'edit-work-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>업무 수정</h3>
+                <button onclick="closeModal('edit-work-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="updateTask(event, '${taskId}')">
+                    <div class="form-group">
+                        <label class="form-label">업무 제목 *</label>
+                        <input type="text" class="form-input" id="edit-task-title" value="${escapeHtml(task.내용 || task.title || '')}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">담당자 *</label>
+                        <select class="form-select" id="edit-task-assignee" required>
+                            ${MEMBERS.map(m => `<option value="${m.name}" ${task.담당자 === m.name ? 'selected' : ''}>${m.name} (${m.role})</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">상태 *</label>
+                        <select class="form-select" id="edit-task-status" required>
+                            <option value="시작전" ${task.상태 === '시작전' ? 'selected' : ''}>예정</option>
+                            <option value="진행중" ${['진행중', '진행'].includes(task.상태) ? 'selected' : ''}>진행중</option>
+                            <option value="완료" ${['완료', '완료됨'].includes(task.상태) ? 'selected' : ''}>완료</option>
+                            <option value="보류" ${task.상태 === '보류' ? 'selected' : ''}>보류</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">긴급도</label>
+                        <select class="form-select" id="edit-task-priority">
+                            <option value="보통" ${task.긴급도 === '보통' ? 'selected' : ''}>보통</option>
+                            <option value="높음" ${['높음', '높'].includes(task.긴급도) ? 'selected' : ''}>높음</option>
+                            <option value="긴급" ${task.긴급도 === '긴급' ? 'selected' : ''}>긴급</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">마감일</label>
+                        <input type="date" class="form-input" id="edit-task-deadline" value="${task.마감일 || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">구분</label>
+                        <input type="text" class="form-input" id="edit-task-category" value="${task.구분 || ''}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="deleteTask('${taskId}')" class="btn-secondary text-red-600">
+                            <i class="fas fa-trash mr-2"></i>삭제
+                        </button>
+                        <div class="flex space-x-3">
+                            <button type="button" onclick="closeModal('edit-work-modal')" class="btn-secondary">취소</button>
+                            <button type="submit" class="btn-primary">저장</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.getElementById('modals-container').appendChild(modal);
+}
+
+async function updateTask(event, taskId) {
+    event.preventDefault();
+
+    const updatedTask = {
+        action: 'update',
+        type: 'task',
+        id: taskId,
+        data: {
+            내용: document.getElementById('edit-task-title').value,
+            담당자: document.getElementById('edit-task-assignee').value,
+            상태: document.getElementById('edit-task-status').value,
+            긴급도: document.getElementById('edit-task-priority').value,
+            마감일: document.getElementById('edit-task-deadline').value,
+            구분: document.getElementById('edit-task-category').value
+        }
+    };
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedTask)
+        });
+
+        closeModal('edit-work-modal');
+        showNotification('업무가 수정되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('수정 실패: ' + error.message, 'error');
+    }
+}
+
+async function deleteTask(taskId) {
+    if (!confirm('이 업무를 삭제하시겠습니까?')) return;
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', type: 'task', id: taskId })
+        });
+
+        closeModal('edit-work-modal');
+        showNotification('업무가 삭제되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('삭제 실패: ' + error.message, 'error');
+    }
+}
+
+// ===== 자동화 관리 탭 =====
+function renderAutomationTab() {
+    const completed = allAutomations.filter(a => a.status === 'completed').length;
+    const inProgress = allAutomations.filter(a => a.status === 'in_progress').length;
+    const avgEfficiency = allAutomations.length > 0
+        ? Math.round(allAutomations.reduce((sum, a) => sum + (parseInt(a.efficiency) || 0), 0) / allAutomations.length)
+        : 0;
+    const totalTimeSaved = allAutomations.reduce((sum, a) => sum + (parseInt(a.timeSaved) || 0), 0);
+
+    document.getElementById('auto-complete-count').textContent = completed;
+    document.getElementById('auto-progress-count').textContent = inProgress;
+    document.getElementById('auto-efficiency').textContent = avgEfficiency;
+    document.getElementById('auto-time-saved').textContent = totalTimeSaved;
+
+    const container = document.getElementById('automation-list');
+
+    if (allAutomations.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-12 text-gray-500 bg-white rounded-xl border border-gray-200">
+                <i class="fas fa-robot text-4xl mb-4"></i>
+                <p>등록된 자동화 프로젝트가 없습니다</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = allAutomations.map(auto => {
+        const statusClass = auto.status === 'completed' ? 'status-완료' : 'status-진행중';
+        const statusText = auto.status === 'completed' ? '완료' : '진행중';
+
+        return `
+            <div class="automation-card" onclick="editAutomation('${auto.id}')">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                        </div>
+                        <h4 class="font-semibold text-lg text-gray-900 mb-2">${escapeHtml(auto.title)}</h4>
+                        <p class="text-sm text-gray-600">${escapeHtml(auto.description || '')}</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+                    <div>
+                        <p class="text-xs text-gray-500 mb-1">효율성</p>
+                        <p class="font-semibold text-purple-600">${auto.efficiency || 0}%</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 mb-1">절감 시간</p>
+                        <p class="font-semibold text-orange-600">${auto.timeSaved || 0}h/월</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500 mb-1">시작일</p>
+                        <p class="font-semibold text-gray-700">${formatDate(auto.startDate)}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function openAddAutomationModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'add-automation-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>새 자동화 프로젝트</h3>
+                <button onclick="closeModal('add-automation-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveNewAutomation(event)">
+                    <div class="form-group">
+                        <label class="form-label">프로젝트 이름 *</label>
+                        <input type="text" class="form-input" id="auto-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-textarea" id="auto-description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">상태 *</label>
+                        <select class="form-select" id="auto-status" required>
+                            <option value="in_progress">진행중</option>
+                            <option value="completed">완료</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="form-label">효율성 (%)</label>
+                            <input type="number" class="form-input" id="auto-efficiency" min="0" max="100" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">월 절감 시간 (h)</label>
+                            <input type="number" class="form-input" id="auto-time-saved" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">시작일</label>
+                        <input type="date" class="form-input" id="auto-start-date">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="closeModal('add-automation-modal')" class="btn-secondary">취소</button>
+                        <button type="submit" class="btn-primary">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.getElementById('modals-container').appendChild(modal);
+}
+
+async function saveNewAutomation(event) {
+    event.preventDefault();
+
+    const newAuto = {
+        action: 'create',
+        type: 'automation',
+        data: {
+            title: document.getElementById('auto-title').value,
+            description: document.getElementById('auto-description').value,
+            status: document.getElementById('auto-status').value,
+            efficiency: document.getElementById('auto-efficiency').value,
+            timeSaved: document.getElementById('auto-time-saved').value,
+            startDate: document.getElementById('auto-start-date').value || new Date().toISOString().split('T')[0]
+        }
+    };
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newAuto)
+        });
+
+        closeModal('add-automation-modal');
+        showNotification('자동화 프로젝트가 추가되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('저장 실패: ' + error.message, 'error');
+    }
+}
+
+function editAutomation(autoId) {
+    const auto = allAutomations.find(a => a.id === autoId);
+    if (!auto) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'edit-automation-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>자동화 프로젝트 수정</h3>
+                <button onclick="closeModal('edit-automation-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="updateAutomation(event, '${autoId}')">
+                    <div class="form-group">
+                        <label class="form-label">프로젝트 이름 *</label>
+                        <input type="text" class="form-input" id="edit-auto-title" value="${escapeHtml(auto.title)}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-textarea" id="edit-auto-description">${escapeHtml(auto.description || '')}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">상태 *</label>
+                        <select class="form-select" id="edit-auto-status" required>
+                            <option value="in_progress" ${auto.status === 'in_progress' ? 'selected' : ''}>진행중</option>
+                            <option value="completed" ${auto.status === 'completed' ? 'selected' : ''}>완료</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="form-group">
+                            <label class="form-label">효율성 (%)</label>
+                            <input type="number" class="form-input" id="edit-auto-efficiency" min="0" max="100" value="${auto.efficiency || 0}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">월 절감 시간 (h)</label>
+                            <input type="number" class="form-input" id="edit-auto-time-saved" min="0" value="${auto.timeSaved || 0}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">시작일</label>
+                        <input type="date" class="form-input" id="edit-auto-start-date" value="${auto.startDate || ''}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="deleteAutomation('${autoId}')" class="btn-secondary text-red-600">
+                            <i class="fas fa-trash mr-2"></i>삭제
+                        </button>
+                        <div class="flex space-x-3">
+                            <button type="button" onclick="closeModal('edit-automation-modal')" class="btn-secondary">취소</button>
+                            <button type="submit" class="btn-primary">저장</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.getElementById('modals-container').appendChild(modal);
+}
+
+async function updateAutomation(event, autoId) {
+    event.preventDefault();
+
+    const updatedAuto = {
+        action: 'update',
+        type: 'automation',
+        id: autoId,
+        data: {
+            title: document.getElementById('edit-auto-title').value,
+            description: document.getElementById('edit-auto-description').value,
+            status: document.getElementById('edit-auto-status').value,
+            efficiency: document.getElementById('edit-auto-efficiency').value,
+            timeSaved: document.getElementById('edit-auto-time-saved').value,
+            startDate: document.getElementById('edit-auto-start-date').value
+        }
+    };
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedAuto)
+        });
+
+        closeModal('edit-automation-modal');
+        showNotification('자동화 프로젝트가 수정되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('수정 실패: ' + error.message, 'error');
+    }
+}
+
+async function deleteAutomation(autoId) {
+    if (!confirm('이 자동화 프로젝트를 삭제하시겠습니까?')) return;
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', type: 'automation', id: autoId })
+        });
+
+        closeModal('edit-automation-modal');
+        showNotification('자동화 프로젝트가 삭제되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('삭제 실패: ' + error.message, 'error');
+    }
+}
+
+// ===== 템플릿 탭 =====
+function renderTemplatesTab() {
+    const container = document.getElementById('templates-list');
+
+    if (allTemplates.length === 0) {
+        container.innerHTML = `
+            <div class="col-span-3 text-center py-12 text-gray-500 bg-white rounded-xl border border-gray-200">
+                <i class="fas fa-file-alt text-4xl mb-4"></i>
+                <p>등록된 템플릿이 없습니다</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = allTemplates.map(template => `
+        <div class="template-card" onclick="editTemplate('${template.id}')">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-file-alt text-blue-600"></i>
+                </div>
+            </div>
+            <h4 class="font-semibold text-gray-900 mb-2">${escapeHtml(template.title)}</h4>
+            <p class="text-sm text-gray-600 mb-4">${escapeHtml(template.description || '')}</p>
+            <div class="flex items-center justify-between text-xs text-gray-500">
+                <span><i class="fas fa-tag mr-1"></i>${escapeHtml(template.category || '일반')}</span>
+                <span><i class="fas fa-clock mr-1"></i>${formatDate(template.createdAt)}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openAddTemplateModal() {
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'add-template-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>새 템플릿</h3>
+                <button onclick="closeModal('add-template-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="saveNewTemplate(event)">
+                    <div class="form-group">
+                        <label class="form-label">템플릿 이름 *</label>
+                        <input type="text" class="form-input" id="template-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-textarea" id="template-description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">카테고리</label>
+                        <input type="text" class="form-input" id="template-category" placeholder="예: 보고서, 회의록, 분석">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">템플릿 내용 *</label>
+                        <textarea class="form-textarea" id="template-content" rows="10" required></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="closeModal('add-template-modal')" class="btn-secondary">취소</button>
+                        <button type="submit" class="btn-primary">저장</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.getElementById('modals-container').appendChild(modal);
+}
+
+async function saveNewTemplate(event) {
+    event.preventDefault();
+
+    const newTemplate = {
+        action: 'create',
+        type: 'template',
+        data: {
+            title: document.getElementById('template-title').value,
+            description: document.getElementById('template-description').value,
+            category: document.getElementById('template-category').value || '일반',
+            content: document.getElementById('template-content').value
+        }
+    };
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newTemplate)
+        });
+
+        closeModal('add-template-modal');
+        showNotification('템플릿이 추가되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('저장 실패: ' + error.message, 'error');
+    }
+}
+
+function editTemplate(templateId) {
+    const template = allTemplates.find(t => t.id === templateId);
+    if (!template) return;
+
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.id = 'edit-template-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>템플릿 수정</h3>
+                <button onclick="closeModal('edit-template-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form onsubmit="updateTemplate(event, '${templateId}')">
+                    <div class="form-group">
+                        <label class="form-label">템플릿 이름 *</label>
+                        <input type="text" class="form-input" id="edit-template-title" value="${escapeHtml(template.title)}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">설명</label>
+                        <textarea class="form-textarea" id="edit-template-description" rows="3">${escapeHtml(template.description || '')}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">카테고리</label>
+                        <input type="text" class="form-input" id="edit-template-category" value="${escapeHtml(template.category || '')}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">템플릿 내용 *</label>
+                        <textarea class="form-textarea" id="edit-template-content" rows="10" required>${escapeHtml(template.content)}</textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="deleteTemplate('${templateId}')" class="btn-secondary text-red-600">
+                            <i class="fas fa-trash mr-2"></i>삭제
+                        </button>
+                        <div class="flex space-x-3">
+                            <button type="button" onclick="closeModal('edit-template-modal')" class="btn-secondary">취소</button>
+                            <button type="submit" class="btn-primary">저장</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    `;
+    document.getElementById('modals-container').appendChild(modal);
+}
+
+async function updateTemplate(event, templateId) {
+    event.preventDefault();
+
+    const updatedTemplate = {
+        action: 'update',
+        type: 'template',
+        id: templateId,
+        data: {
+            title: document.getElementById('edit-template-title').value,
+            description: document.getElementById('edit-template-description').value,
+            category: document.getElementById('edit-template-category').value,
+            content: document.getElementById('edit-template-content').value
+        }
+    };
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedTemplate)
+        });
+
+        closeModal('edit-template-modal');
+        showNotification('템플릿이 수정되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('수정 실패: ' + error.message, 'error');
+    }
+}
+
+async function deleteTemplate(templateId) {
+    if (!confirm('이 템플릿을 삭제하시겠습니까?')) return;
+
+    try {
+        await fetch(WEBAPP_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', type: 'template', id: templateId })
+        });
+
+        closeModal('edit-template-modal');
+        showNotification('템플릿이 삭제되었습니다!', 'success');
+        setTimeout(() => loadData(), 1000);
+    } catch (error) {
+        showNotification('삭제 실패: ' + error.message, 'error');
+    }
+}
+
+// ===== Utility Functions =====
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) modal.remove();
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    if (isNaN(date)) return dateStr;
+    return `${date.getMonth() + 1}/${date.getDate()}`;
+}
+
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+function showError(message) {
+    document.getElementById('my-tasks-list').innerHTML = `<div class="text-center py-8 text-red-500">${escapeHtml(message)}</div>`;
+    showNotification(message, 'error');
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${
+        type === 'success' ? 'bg-green-600' :
+        type === 'error' ? 'bg-red-600' :
+        type === 'warning' ? 'bg-yellow-600' :
+        'bg-blue-600'
+    } text-white font-semibold px-6 py-4 rounded-lg shadow-lg`;
+
+    const icon = type === 'success' ? 'check-circle' :
+                 type === 'error' ? 'exclamation-circle' :
+                 type === 'warning' ? 'exclamation-triangle' :
+                 'info-circle';
+
+    notification.innerHTML = `<div class="flex items-center space-x-2"><i class="fas fa-${icon}"></i><span>${escapeHtml(message)}</span></div>`;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+        notification.style.opacity = '0';
+        setTimeout(() => { if (notification.parentNode) document.body.removeChild(notification); }, 300);
+    }, 3000);
+}
     </script>
 </body>
 </html>
